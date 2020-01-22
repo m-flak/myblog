@@ -1,0 +1,9 @@
+.Post h3 {
+    margin: 0;
+}
+.Post hr {
+    margin: 0.25em 0px 0.5em 0px;
+}
+.Post p {
+    margin: 0px 0px 0.5em 0px;
+}

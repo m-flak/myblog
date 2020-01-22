@@ -1,0 +1,35 @@
+/** Default Route Style **/
+.RoutePage {
+    background-color: #282c34;
+    color: white;
+    border-top: solid 2px #373845;
+    min-height: 100vh;
+    height: 100%;
+}
+
+/** HomeRoute Styles **/
+.Layout-HR {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-gap: 0.75em;
+    grid-auto-rows: min-content max-content;
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.Layout-HR > div {
+    background-color: rgba(77, 77, 77, 0.25);
+    border-radius: 0.33em;
+    padding: 1px 1em 1px 1em;
+}
+
+/** NotFoundRoute Styles **/
+.Layout-NFR {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2em;
+    padding-right: 25%;
+    padding-left: 25%;
+}
