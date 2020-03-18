@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <properties>
+        <databaseProvider>mysql</databaseProvider>
+    </properties>
+    <properties-mysql>
+        <jdbcClass>com.mysql.jdbc.Driver</jdbcClass>
+        <jdbcURL>jdbc:mysql://localhost</jdbcURL>
+        <jdbcUser>myblog_user</jdbcUser>
+        <jdbcPwd>pleasechangeme</jdbcPwd>
+        <empireDBDriverClass>org.apache.empire.db.mysql.DBDatabaseDriverMySQL</empireDBDriverClass>
+        <empireDBDriverProperites>
+            <databaseName>myblogdb</databaseName>
+        </empireDBDriverProperites>
+    </properties-mysql>
+</config>

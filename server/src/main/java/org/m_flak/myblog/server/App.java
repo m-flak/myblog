@@ -1,5 +1,7 @@
 package org.m_flak.myblog.server;
 
+import java.lang.Thread;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.*;
@@ -10,6 +12,7 @@ import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.tuple.Tuples;
 
 import org.m_flak.myblog.server.mode.*;
+import org.m_flak.myblog.server.db.ServerDatabase;
 
 public class App
 {
@@ -25,9 +28,10 @@ public class App
     private static final Pair<String, String> defaultMode =
         Tuples.pair("mode", "server");
 
-    /** Initialize the logger prior to the execution of main() **/
+    /* Initialize the logger prior to the execution of main() **/
     static {
         App.logging.addLogger(App.logger);
+        App.logging.addLogger(ServerDatabase.inst().getLogger());
     }
 
     private static void changeConfigProp(String key, String value) {
@@ -84,11 +88,35 @@ public class App
         App.checkSetRequiredProps(App.defaultPort);
         App.checkSetRequiredProps(App.defaultMode);
 
+        // Shutdown hook to close the database
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                App.logger.info("ENTERING SHUT DOWN PHASE...");
+
+                if (ServerDatabase.isAnInstance()) {
+                    if(ServerDatabase.inst().hasConnection()) {
+                        App.logger.info("Closing SQL connection.");
+                        try {
+                            ServerDatabase.inst().conn().close();
+                        }
+                        catch (SQLException se) {
+                            App.logger.warning("Couldn't close SQL connection.");
+                            App.logger.warning(se.getMessage());
+                        }
+                    }
+                }
+            }
+        });
+
         String mode = App.properties.getProperty("mode");
         switch (mode) {
             case "server" -> new ServerMode(App.properties, App.logger).enterMode();
             case "migrate" -> new MigrationMode(App.properties, App.logger).enterMode();
             case "shell" -> new ConsoleMode(App.properties, App.logger).enterMode();
         }
+
+        // Sometimes, the process will hang on exit. This is bad for a daemon. :)
+        System.exit(0);
     }
 }

@@ -1,9 +1,15 @@
 package org.m_flak.myblog.server.mode;
 
+import java.lang.Runnable;
+
 import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.Scanner;
 import java.util.InputMismatchException;
+
+import org.apache.empire.db.DBSQLScript;
+
+import org.m_flak.myblog.server.db.ServerDatabase;
 
 public class MigrationMode implements RunMode {
     private Properties config;
@@ -42,7 +48,7 @@ public class MigrationMode implements RunMode {
 
         while (true) {
             System.out.println("server> ");
-            String command = "";
+            String command;
 
             try {
                 command = userInput.nextLine();
@@ -58,6 +64,19 @@ public class MigrationMode implements RunMode {
             }
             else if (command.toLowerCase().matches("(migrate+)")) {
                 System.out.println("Preparing to run migrations on database...");
+                ServerDatabase.inst().runOnDB(new Runnable() {
+                    @Override
+                    public void run() {
+                        var con = ServerDatabase.inst().conn();
+                        var driv = ServerDatabase.inst().driv();
+                        DBSQLScript script = new DBSQLScript();
+
+                        ServerDatabase.inst().db().get().getCreateDDLScript(driv, script);
+                        ServerDatabase.inst().getLogger().info(script.toString());
+                        script.executeAll(driv, con);
+                        ServerDatabase.inst().db().get().commit(con);
+                    }
+                });
             }
         }
 

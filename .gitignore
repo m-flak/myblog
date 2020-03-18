@@ -2,6 +2,14 @@
 
 # server build-generated files
 server/target/*
+server/src/main/resources/keystore.jks
+server/src/test/resources/keystore.jks
+server/src/test/resources/jks.properties
+server/src/test/resources/web.properties
+
+# intellij files for server
+server/.idea
+server.iml
 
 # dependencies
 /node_modules
