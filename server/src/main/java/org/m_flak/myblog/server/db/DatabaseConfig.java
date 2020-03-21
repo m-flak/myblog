@@ -1,5 +1,7 @@
 package org.m_flak.myblog.server.db;
 
+import java.io.FileNotFoundException;
+
 import org.apache.empire.xml.XMLConfiguration;
 
 public class DatabaseConfig extends XMLConfiguration {
@@ -13,16 +15,32 @@ public class DatabaseConfig extends XMLConfiguration {
      * No matter, I'm really just following the examples here -.-      */
     private String empireDBDriverClass = "org.apache.empire.db.mysql.DBDatabaseDriverMySQL";
 
+    private final boolean fromClassPath;
+
     public DatabaseConfig() {
         super();
 
         this.configPath =
             DatabaseConfig.class.getClassLoader().getResource("database.xml").getFile();
+
+        /* This is retarded, and I shouldn't have copied the example code when I
+         * started learning empire-db.
+         * * *
+         * Anyways, the following is required to allow empire-db to read the
+         * configuration XML from within a shaded jar.
+         */
+        if (this.configPath.matches("^.+\\.jar!\\/.+")) {
+            fromClassPath = true;
+            this.configPath = "database.xml";
+        }
+        else {
+            fromClassPath = false;
+        }
     }
 
     // filename is unused
     public void init(String filename) {
-        super.init(this.configPath, false);
+        super.init(this.configPath, this.fromClassPath);
         this.readProperties(this, "properties");
         this.readProperties(this, "properties-mysql");
     }

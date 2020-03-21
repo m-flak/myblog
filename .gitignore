@@ -2,6 +2,7 @@
 
 # server build-generated files
 server/target/*
+server/dependency-reduced-pom.xml
 server/src/main/resources/keystore.jks
 server/src/test/resources/keystore.jks
 server/src/test/resources/jks.properties
