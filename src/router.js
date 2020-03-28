@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Routes, HomeRoute, NotFoundRoute } from './routes';
+import { Routes, HomeRoute, LoginRoute, NotFoundRoute } from './routes';
 
 /** Returns from dotenv: REACT_APP_BASENAME=$npm_package_homepage **/
 function find_base_name() {
@@ -52,6 +52,7 @@ export default class AppRouter extends React.Component {
                 <BrowserRouter basename={find_base_name()}>
                     <Switch>
                         <Route exact path="/" component={HomeRoute} />
+                        <Route exact path="/login/" component={LoginRoute} />
                         <Route component={NotFoundRoute} />
                     </Switch>
                 </BrowserRouter>

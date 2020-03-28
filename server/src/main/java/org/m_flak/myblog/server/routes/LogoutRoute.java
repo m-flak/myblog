@@ -7,17 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import org.m_flak.myblog.server.sec.AccessToken;
 import org.m_flak.myblog.server.db.ServerDatabase;
 
 import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.invalidateToken;
 
-public class LogoutRoute extends AbstractHandler {
+public class LogoutRoute extends RouteHandler {
     @Override
     public void handle(String target, Request request, HttpServletRequest httpRequest,
                     HttpServletResponse httpResponse) throws IOException, ServletException {
+        setupCORS(httpResponse);
         request.setHandled(true);
 
         /* Make sure we have the `tok` parameter **/

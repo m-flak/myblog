@@ -8,11 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import org.m_flak.myblog.server.sec.KeystoreInfo;
 
-public class RequesterRoute extends AbstractHandler {
+public class RequesterRoute extends RouteHandler {
     private static class ResponseRR implements RouteResponse.Response<String> {
         private String rErr;
         private String rData;
@@ -31,6 +30,7 @@ public class RequesterRoute extends AbstractHandler {
     @Override
     public void handle(String target, Request request, HttpServletRequest httpRequest,
                     HttpServletResponse httpResponse) throws IOException, ServletException {
+        setupCORS(httpResponse);
         // Set Response Type as JSON
         httpResponse.setContentType("application/json;charset=utf-8");
         // Do not cache in browser.

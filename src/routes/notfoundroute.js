@@ -10,7 +10,7 @@ export class NotFoundRoute extends React.Component {
               <div className="Layout-NFR">
                 <Card color="dark">
                     <CardBody>
-                        <CardHeader>Ooops!</CardHeader>
+                        <CardHeader><h4>Ooops!</h4></CardHeader>
                         <CardTitle><i>The requested page cannot be found!</i></CardTitle>
                         <CardText>
                             We're unable to find <code>{window.location.pathname}</code>.

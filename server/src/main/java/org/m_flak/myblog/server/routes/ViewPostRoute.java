@@ -6,14 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+
 import org.json.JSONObject;
 import org.m_flak.myblog.server.data.PostBean;
 import org.m_flak.myblog.server.db.ServerDatabase;
 
 import static org.m_flak.myblog.server.db.methods.PostMethods.getPostById;
 
-public class ViewPostRoute extends AbstractHandler {
+public class ViewPostRoute extends RouteHandler {
     private static class ResponseVPR implements RouteResponse.Response<JSONObject> {
         private String rErr;
         private JSONObject rData;
@@ -40,6 +40,7 @@ public class ViewPostRoute extends AbstractHandler {
     @Override
     public void handle(String target, Request request, HttpServletRequest httpRequest,
                        HttpServletResponse httpResponse) throws IOException, ServletException {
+        setupCORS(httpResponse);
         request.setHandled(true);
 
         /* Make sure we have the `id` parameter **/

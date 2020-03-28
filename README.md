@@ -15,6 +15,8 @@ For general questions about building the frontend, [see this file](README_CAR.md
 
 The server must be configured. Below are the steps necessary to get it up and running.
 
+Eventually, there will be a configuration script to do all of this.
+
 ##### Database Configuration
 
 The values of the below SQL commands should be identical to whatever is in _**server/src/main/resources/database.xml**_
@@ -38,3 +40,7 @@ If you're running a reverse proxy to the server (which you should), you might ne
 Here's how you determine whether or not you will need to modify that file:
 - <u>A reverse proxy directive in /</u> → _No change required._
 - <u>A reverse proxy directive in some subdirectory, say /foobar/</u> → _Change required!_
+
+##### CORS Origin
+
+Set the **frontend_origin** variable in _**server/src/main/resources/web.properties**_ to the origin where the frontend will be running from.

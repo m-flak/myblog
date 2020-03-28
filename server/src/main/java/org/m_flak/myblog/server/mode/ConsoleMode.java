@@ -179,7 +179,7 @@ public class ConsoleMode implements RunMode {
                             ServerDatabase.inst().getLogger().info(
                                     String.format("Created user '%s' with ID: %d.",
                                             finUser,
-                                            (long) newUser.getValue(0))
+                                            newUser.getValue(0))
                             );
 
                             db.commit(con);

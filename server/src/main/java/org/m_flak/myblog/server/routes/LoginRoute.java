@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -29,7 +28,7 @@ import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.userTokenEx
 import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.updateUserToken;
 import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.fetchUserToken;
 
-public class LoginRoute extends AbstractHandler {
+public class LoginRoute extends RouteHandler {
     private static class ResponseLR implements RouteResponse.Response<String> {
         private String rErr;
         private String rData;
@@ -64,15 +63,26 @@ public class LoginRoute extends AbstractHandler {
     @Override
     public void handle(String target, Request request, HttpServletRequest httpRequest,
                     HttpServletResponse httpResponse) throws IOException, ServletException {
+        setupCORS(httpResponse);
         request.setHandled(true);
 
         // Perform validation of the request method
         if (!Objects.equals(request.getMethod(), "POST")) {
-            httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            /*
+             * Since we're accepting JSON as input, we must use OPTIONS!
+             *
+             * The things you learn when you build stuff from scratch!
+             */
+            if (Objects.equals(request.getMethod(), "OPTIONS")) {
+                sendCORSOptions(httpResponse, new String[] {"POST"});
+                return;
+            }
+
+            httpResponse.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
         }
         // Perform validation of the request content type
-        if (!request.getContentType().matches("^application\\/json.+")) {
+        if (!request.getContentType().matches("^application\\/json.*")) {
             httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }

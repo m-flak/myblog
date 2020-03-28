@@ -58,6 +58,13 @@ public class WebServer {
         }
     }
 
+    private void setAttributes() {
+        final String attrFrontendOrigin =
+            webProperties.getProperty("web.frontend_origin", "*");
+
+        webServer.setAttribute("frontend_origin", attrFrontendOrigin);
+    }
+
     public final boolean isStartedAndRunning() {
         return (webServer.isStarted() && webServer.isRunning());
     }
@@ -71,6 +78,9 @@ public class WebServer {
     }
 
     public void start(boolean doJoin) throws Exception {
+        // Assign attributes to the server instance
+        setAttributes();
+
         // Register all routes (or contexts as jetty calls them)
         // We set them as children to the root context to allow any application root
 
@@ -81,14 +91,17 @@ public class WebServer {
 
         // PostsRoute - Aggregates many posts
         ContextHandler postsContext = webRootContext.addContext(getWebAppRoot()+"posts", "");
+        postsContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
         postsContext.setHandler(new PostsRoute());
-        
+
         // ViewPostRoute - Fetches a post from the DB into json
         ContextHandler viewPostContext = webRootContext.addContext(getWebAppRoot()+"viewpost", "");
+        viewPostContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
         viewPostContext.setHandler(new ViewPostRoute());
 
         // LogoutRoute - Performs a 'log out', invalidating an access token
         ContextHandler logoutContext = webRootContext.addContext(getWebAppRoot()+"logout", "");
+        logoutContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
         logoutContext.setHandler(new LogoutRoute());
 
         // LoginRoute - Performs login & generates access_tokens
@@ -98,6 +111,7 @@ public class WebServer {
 
         // RequesterRoute - Sends the public key to client
         ContextHandler requesterContext = webRootContext.addContext(getWebAppRoot()+"request", "");
+        requesterContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
         requesterContext.setHandler(new RequesterRoute());
 
         // Assign root context

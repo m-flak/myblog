@@ -213,6 +213,18 @@
                                     <include>**</include>
                                 </includes>
                             </filter>
+                            <filter>
+                                <artifact>mysql:mysql-connector-java</artifact>
+                                <includes>
+                                    <include>**</include>
+                                </includes>
+                            </filter>
+                            <filter>
+                                <artifact>org.apache.empire-db:empire-db</artifact>
+                                <includes>
+                                    <include>**</include>
+                                </includes>
+                            </filter>
                         </filters>
                     </configuration>
                 </execution>

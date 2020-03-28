@@ -1,7 +1,6 @@
 package org.m_flak.myblog.server.routes;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.impl.tuple.Tuples;
@@ -23,7 +22,7 @@ import java.io.IOException;
 import static org.m_flak.myblog.server.db.methods.PostMethods.getAllPosts;
 import static org.m_flak.myblog.server.db.methods.PostMethods.getAllSummaryPosts;
 
-public class PostsRoute extends AbstractHandler {
+public class PostsRoute extends RouteHandler {
     public static final int MODE_FULL = 1;
     public static final int MODE_SUMMARY = 2;
     public static final int FILTER_NONE = 0;
@@ -150,6 +149,7 @@ public class PostsRoute extends AbstractHandler {
     @Override
     public void handle(String target, Request request, HttpServletRequest httpRequest,
                        HttpServletResponse httpResponse) throws IOException, ServletException {
+        setupCORS(httpResponse);
         request.setHandled(true);
 
         /* Make sure we have the `mode` parameter **/
