@@ -203,6 +203,12 @@ public class WebAuthTests extends TestUsingWebDB {
             var theResponse = httpClient.execute(getLogout);
             try {
                 assertEquals(200, theResponse.getStatusLine().getStatusCode());
+
+                assertThat(
+                    theResponse.getEntity().getContentType().getValue(),
+                    containsString("application/json")
+                );
+
                 assertTrue(watFixture.mockUserTokenIsExpired());
 
                 // should succeed also

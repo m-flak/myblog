@@ -14,6 +14,21 @@ import org.m_flak.myblog.server.db.ServerDatabase;
 import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.invalidateToken;
 
 public class LogoutRoute extends RouteHandler {
+    private static class ResponseLOR implements RouteResponse.Response<String> {
+        private String rErr;
+        private String rData;
+
+        @Override
+        public String error() {
+            return rErr;
+        }
+
+        @Override
+        public String data() {
+            return rData;
+        }
+    }
+
     @Override
     public void handle(String target, Request request, HttpServletRequest httpRequest,
                     HttpServletResponse httpResponse) throws IOException, ServletException {
@@ -58,7 +73,11 @@ public class LogoutRoute extends RouteHandler {
             }
         });
 
-        httpResponse.setContentLength(0);
-        httpResponse.setStatus(HttpServletResponse.SC_OK);
+        var resp = new ResponseLOR();
+        resp.rErr = "OK";
+        resp.rData = "";
+
+        httpResponse.setContentType("application/json;charset=utf-8");
+        httpResponse.getWriter().print(new RouteResponse(resp));
     }
 }

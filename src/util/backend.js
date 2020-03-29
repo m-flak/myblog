@@ -87,7 +87,7 @@ export function getFromBackend(api_url, dict_args, callback) {
         if (Object.entries(dict_args).length > 0) {
             var queryString = q_string.stringify(dict_args, {});
 
-            queryURL = queryURL+queryString;
+            queryURL = queryURL+'?'+queryString;
         }
     }
 

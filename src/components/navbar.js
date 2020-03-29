@@ -36,6 +36,7 @@ export class BlogNavBar extends React.Component {
     }
 
     loggedIn(session) {
+        // Because the navbar is in a separate element, I have to do this. :/
         window.location.reload(false);
     }
 

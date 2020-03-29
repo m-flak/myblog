@@ -1,6 +1,7 @@
 export { HomeRoute } from './homeroute';
 export { NotFoundRoute } from './notfoundroute';
 export { LoginRoute } from './loginroute.js';
+export { LogoutRoute } from './logoutroute.js';
 
 export const Routes = [
     {name: 'Home', path: '/', navTo: true},
