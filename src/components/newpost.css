@@ -1,0 +1,51 @@
+/* Override some of the Quill & BS colors  */
+div.quill, .NewPostTitleHolder input {
+    background-color: #b4babb;
+    color: #444444;
+}
+.ql-editor:focus {
+    background-color: #ffffff;
+    outline: 0;
+    box-shadow: 0px 0px 0px 0.2rem rgba(0,123,255,0.25);
+}
+.btn-primary.disabled {
+    background-color: #49647e !important;
+}
+
+/* NewPost specific stylings */
+.NewPost h3 {
+    margin: 0;
+}
+.NewPost hr {
+    margin: 0.25em 0px 0.5em 0px;
+}
+
+.NewPostAlertHolder {
+    margin-bottom: -0.44rem;
+}
+
+.NewPostButtonHolder {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+.NewPostTitleHolder {
+    margin-bottom: 0.5rem;
+}
+.NewPostTitleHolder span {
+    background-color: #5e6364;
+    color: #b4babb;
+}
+.NewPostTitleHolder span, .NewPostTitleHolder input {
+    border: 1px solid #444444;
+}
+
+/* Alerts */
+.AlertShow {
+    display: auto;
+}
+.AlertHide {
+    display: none;
+}

@@ -29,7 +29,7 @@ export class Posts extends React.Component {
             <>
             {this.state.posts.map((post, index) => {
                 return (
-                    <div key={index} style={{gridColumn: 1, gridRow: 1+index}}>
+                    <div key={index} style={{gridColumn: this.props.col, gridRow: this.props.row+index}}>
                         <Post title={post.title} contents={post.contents} />
                     </div>
                 );
@@ -37,4 +37,8 @@ export class Posts extends React.Component {
             </>
         );
     }
+}
+Posts.defaultProps = {
+    col: "1",
+    row: "1"
 }
