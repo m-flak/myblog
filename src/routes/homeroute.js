@@ -37,7 +37,7 @@ export class HomeRoute extends React.Component {
             <div className="RoutePage">
               <div className="Layout-HR">
                 <NewPost onCompose={this.handleCompose} canPost={this.state.canPost} />
-                <Posts row={this.state.rowOffset+1} />
+                <Posts update={this.state.updateDummy} row={this.state.rowOffset+1} />
                 <AboutMe row={this.state.rowOffset+1} />
                 <MonthList row={this.state.rowOffset+2} />
               </div>

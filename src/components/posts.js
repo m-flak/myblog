@@ -15,8 +15,7 @@ export class Posts extends React.Component {
         };
     }
 
-    componentDidMount() {
-        //TODO: Replace with query to backend
+    fetchPosts() {
         getFromBackend('/posts', {mode: MODE_FULL}, (data) => {
             try {
                 if (data instanceof Array) {
@@ -48,18 +47,16 @@ export class Posts extends React.Component {
                 ],
             });
         });
-        /*
-        this.setState({
-            posts: [
-                {
-                    title: 'A Post', contents: 'What it do'
-                },
-                {
-                    title: 'ANOTHER! Post', contents: 'SUP!'
-                },
-            ],
-        });
-        */
+    }
+
+    componentDidMount() {
+        this.fetchPosts();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.update !== this.props.update) {
+            this.fetchPosts();
+        }
     }
 
     render() {
@@ -77,6 +74,7 @@ export class Posts extends React.Component {
     }
 }
 Posts.defaultProps = {
+    update: 0,
     col: "1",
     row: "1"
 }
