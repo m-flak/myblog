@@ -1,9 +1,32 @@
-.Post h3 {
-    margin: 0;
-}
 .Post hr {
     margin: 0.25em 0px 0.5em 0px;
 }
 .Post p {
     margin: 0px 0px 0.5em 0px;
+}
+
+.PostHeader {
+    display: flex;
+    justify-content: space-between;
+}
+.PostHeader h4, .PostHeader h5 {
+    margin: 0;
+}
+
+.PostFooter {
+    display: flex;
+    justify-content: flex-end;
+    margin: -0.125em 0px 0.5em 0px;
+}
+.PostFooter * {
+    font-size: 10pt;
+}
+
+.PostPostedDate {
+    font-style: italic;
+    line-height: 0.25;
+    padding: 0.35em 0px 0.25em 0px;
+}
+.PostPostedDate h5 {
+    font-size: small;
 }

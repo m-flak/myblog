@@ -72,14 +72,22 @@ export class NewPost extends React.Component {
 
     composePostClick(event) {
         const payload = Session.getPayload();
+        var wasSuccessful = true;
 
         postToBackend('/poststory', {token: payload.accessToken, title: this.state.newPostTitle, contents: this.state.newPostContents}, (data) => {
             this.setState({succeeded: true});
+            wasSuccessful = true;
         })
         .catch((error) => {
             console.log(error.stack);
             this.setState({failed: true});
+            wasSuccessful = false;
         });
+
+        if (this.props.onCompose !== undefined && this.props.onCompose !== null) {
+            let onCompose = this.props.onCompose;
+            onCompose(wasSuccessful);
+        }
     }
 
     render() {

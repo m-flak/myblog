@@ -9,6 +9,8 @@
     "axios": "^0.19.2",
     "bc-react-session": "^1.5.2",
     "bootstrap": "^4.4.1",
+    "html-react-parser": "^0.10.3",
+    "node-datetime": "^2.1.2",
     "node-rsa": "^1.0.8",
     "path-browserify": "^0.0.1",
     "query-string": "^4.1.0",

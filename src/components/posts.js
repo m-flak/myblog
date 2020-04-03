@@ -1,5 +1,10 @@
 import React from 'react';
 import { Post } from './post';
+import { getFromBackend } from '../util';
+
+/* Refer to: org.m_flak.myblog.server.routes.PostsRoute
+ */
+const MODE_FULL = 1;
 
 export class Posts extends React.Component {
     constructor(props) {
@@ -12,6 +17,38 @@ export class Posts extends React.Component {
 
     componentDidMount() {
         //TODO: Replace with query to backend
+        getFromBackend('/posts', {mode: MODE_FULL}, (data) => {
+            try {
+                if (data instanceof Array) {
+                    if (data.length === 0) {
+                        throw new Error('There are no posts yet for this blog.');
+                    }
+                    this.setState({posts: data});
+                }
+                else {
+                    throw new Error('Backend returned malformed list.');
+                }
+            }
+            catch (e) {
+                this.setState({
+                    posts: [
+                        {
+                            title: 'We couldn\'t fetch any posts.', contents: e.message
+                        },
+                    ],
+                });
+            }
+        })
+        .catch((error) => {
+            this.setState({
+                posts: [
+                    {
+                        title: 'We couldn\'t fetch any posts.', contents: error.message
+                    },
+                ],
+            });
+        });
+        /*
         this.setState({
             posts: [
                 {
@@ -22,6 +59,7 @@ export class Posts extends React.Component {
                 },
             ],
         });
+        */
     }
 
     render() {
@@ -30,7 +68,7 @@ export class Posts extends React.Component {
             {this.state.posts.map((post, index) => {
                 return (
                     <div key={index} style={{gridColumn: this.props.col, gridRow: this.props.row+index}}>
-                        <Post title={post.title} contents={post.contents} />
+                        <Post postID={post.postID} posterID={post.posterID} title={post.title} datePosted={post.datePosted} contents={post.contents} />
                     </div>
                 );
             })}

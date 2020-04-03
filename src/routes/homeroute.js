@@ -9,7 +9,10 @@ export class HomeRoute extends React.Component {
         this.state = {
             canPost: false,
             rowOffset: 0,
+            updateDummy: 1,     // this is modified just to trigger re-render
         };
+
+        this.handleCompose = this.handleCompose.bind(this);
     }
 
     componentDidMount() {
@@ -22,11 +25,18 @@ export class HomeRoute extends React.Component {
         }
     }
 
+    handleCompose(wasSuccessful) {
+        if (wasSuccessful) {
+            var newVal = this.state.updateDummy ^ 2;
+            this.setState({updateDummy: newVal});
+        }
+    }
+
     render() {
         return (
             <div className="RoutePage">
               <div className="Layout-HR">
-                <NewPost canPost={this.state.canPost} />
+                <NewPost onCompose={this.handleCompose} canPost={this.state.canPost} />
                 <Posts row={this.state.rowOffset+1} />
                 <AboutMe row={this.state.rowOffset+1} />
                 <MonthList row={this.state.rowOffset+2} />
