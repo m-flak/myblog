@@ -21,6 +21,9 @@
 .PostFooter * {
     font-size: 10pt;
 }
+.HidePostFooter {
+    display: none !important;
+}
 
 .PostPostedDate {
     font-style: italic;

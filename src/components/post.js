@@ -1,6 +1,7 @@
 import React from 'react';
 import parse from 'html-react-parser';
 import { PostDate } from './postdate';
+import { FindRoutesURL } from '../router';
 import './post.css';
 
 /* Honest to God...
@@ -21,6 +22,18 @@ export class Post extends React.Component {
             return parse(contents);
         };
 
+        let footer_hide = (default_class) => {
+            if (this.props.original === true) {
+                if (default_class === '') {
+                    return 'HidePostFooter';
+                }
+
+                const classes = ['HidePostFooter', default_class];
+                return classes.join(' ');
+            }
+            return default_class;
+        };
+
         return (
             <div className="Post">
                 <div className="PostHeader">
@@ -33,9 +46,9 @@ export class Post extends React.Component {
                 <React.Fragment>
                     {fragment(this.props.contents)}
                 </React.Fragment>
-                <hr/>
-                <div className="PostFooter">
-                    <u>View Original Post</u>
+                <hr className={footer_hide('')} />
+                <div className={footer_hide('PostFooter')}>
+                    <a href={`${(() => new FindRoutesURL('Post').get())()}${this.props.postID}`}>View Original Post</a>
                 </div>
             </div>
         );
@@ -47,4 +60,5 @@ Post.defaultProps = {
     title: '',
     datePosted: '',
     contents: '',
+    original: false,
 }
