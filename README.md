@@ -5,17 +5,32 @@
 \_√\_ Backend
 \_\_\_ Frontend
 
+Eventually, there will be a configuration script to do all of this (or most of it).
+
 ### Frontend Setup
 
 ##### Building
 
 For general questions about building the frontend, [see this file](README_CAR.md).
 
+##### Deployment
+
+The ``homepage`` variable in _**package.json**_ can be set to allow for an alternate root directory for the frontend application.
+
+Create a .env file. It should look like the following:
+```
+REACT_APP_BLOG_TITLE=The Intercept
+REACT_APP_BLOG_BLURB=The Official Blog of Tony Romo
+REACT_APP_BASENAME=$npm_package_homepage
+REACT_APP_BACKEND_URL=**!SEE_BELOW!**
+```
+**REACT_APP_BACKEND_URL** can be a full URL , like ``http://127.0.0.1:8188/``, or it can be a relative path like ``/api/``. It depends on if you plan to run the backend behind a reverse proxy or not.
+
+_If you don't run the backend behind a reverse proxy, you will be transmitting usernames and authorization tokens over HTTP._
+
 ### Server Setup
 
 The server must be configured. Below are the steps necessary to get it up and running.
-
-Eventually, there will be a configuration script to do all of this.
 
 ##### Database Configuration
 
