@@ -27,10 +27,9 @@ export class HomeRoute extends React.Component {
 
     handleCompose(wasSuccessful) {
         if (wasSuccessful) {
+            // Should variate 1 -> 3, 3 -> 1
             var newVal = this.state.updateDummy ^ 2;
             this.setState({updateDummy: newVal});
-
-            //this.forceUpdate();
         }
     }
 

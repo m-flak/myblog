@@ -111,6 +111,9 @@ public class Database extends DBDatabase {
         for (int i = 0; i < maxTries; i++) {
             try {
                 checkOpen();
+                /* This break statement will never be reached if checkOpen()
+                 *  throws DatabaseNotOpenException.
+                 */
                 break;
             }
             catch (DatabaseNotOpenException done) {
