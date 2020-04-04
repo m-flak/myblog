@@ -22,6 +22,12 @@ export class Posts extends React.Component {
                     if (data.length === 0) {
                         throw new Error('There are no posts yet for this blog.');
                     }
+                    /* The server will return an array containing a blank object
+                     *  if there are no posts.
+                     */
+                    else if (data.length === 1 && data[0].hasOwnProperty('postID') === false) {
+                        throw new Error('There are no posts yet for this blog.');
+                    }
                     this.setState({posts: data});
                 }
                 else {
@@ -55,6 +61,11 @@ export class Posts extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.update !== this.props.update) {
+            this.fetchPosts();
+        }
+
+        // My server likes to return blank arrays `\.('_')./'
+        if (prevState.posts.length > this.state.posts.length) {
             this.fetchPosts();
         }
     }

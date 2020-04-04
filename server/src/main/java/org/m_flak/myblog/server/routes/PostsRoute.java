@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.m_flak.myblog.server.db.methods.PostMethods.getAllPosts;
 import static org.m_flak.myblog.server.db.methods.PostMethods.getAllSummaryPosts;
@@ -80,6 +81,11 @@ public class PostsRoute extends RouteHandler {
             }
         });
 
+        // I don't fucking know why this ends up being null after the DB subroutine
+        if (Objects.isNull(allDem.posts)) {
+            return new JSONObject[]{ new JSONObject() };
+        }
+
         MutableList<PostBean> fullPosts = allDem.posts;
         if (filterMode != FILTER_NONE) {
             if ((filterMode & FILTER_MONTH) == FILTER_MONTH) {
@@ -122,6 +128,11 @@ public class PostsRoute extends RouteHandler {
                 }
             }
         });
+
+        // I don't fucking know why this ends up being null after the DB subroutine
+        if (Objects.isNull(allDem.posts)) {
+            return new JSONObject[]{ new JSONObject() };
+        }
 
         MutableList<SummaryPostBean> sumPosts = allDem.posts;
         if (filterMode != FILTER_NONE) {

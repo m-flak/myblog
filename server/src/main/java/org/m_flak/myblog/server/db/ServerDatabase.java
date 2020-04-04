@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.*;
 
 import org.apache.empire.db.DBDatabaseDriver;
@@ -101,10 +102,21 @@ public class ServerDatabase {
 
     public void runOnDB(Runnable task) {
         try {
-            var future = this.dbService.submit(task);
-            future.get();
+            try {
+                var future = this.dbService.submit(task);
+                future.get();
+            }
+            catch (ExecutionException ee) {
+                /* We need to sleep and retry if Empire-DB shat the bed.
+                 * This seems to occur when there too many requests back-to-back.
+                 */
+                if (ee.getMessage().indexOf("org.apache.empire.db.exceptions.DatabaseNotOpenException") != -1) {
+                    Thread.sleep(500L);
+                    runOnDB(task);
+                }
+            }
         }
-        catch(Exception e) {
+        catch (Exception e) {
             this.dbLog.severe("Failure running task!");
             e.printStackTrace();
             throw new RuntimeException(e);

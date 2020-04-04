@@ -29,6 +29,8 @@ export class HomeRoute extends React.Component {
         if (wasSuccessful) {
             var newVal = this.state.updateDummy ^ 2;
             this.setState({updateDummy: newVal});
+
+            //this.forceUpdate();
         }
     }
 

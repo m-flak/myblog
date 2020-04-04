@@ -1,10 +1,15 @@
 package org.m_flak.myblog.server.db.model;
 
+import java.sql.Connection;
+
 import org.apache.empire.data.DataType;
 import org.apache.empire.db.DBColumn;
 import org.apache.empire.db.DBDatabase;
 import org.apache.empire.db.DBTable;
 import org.apache.empire.db.DBTableColumn;
+
+import org.apache.empire.db.DBDatabaseDriver;
+import org.apache.empire.db.exceptions.DatabaseNotOpenException;
 
 public class Database extends DBDatabase {
     private final static long serialVersionUID = 1L;
@@ -96,5 +101,21 @@ public class Database extends DBDatabase {
     public Database() {
         addRelation(T_TOKENS.C_USER_ID.referenceOn(T_USERS.C_USER_ID)).onDeleteCascade();
         addRelation(T_POSTS.C_POSTER_ID.referenceOn(T_USERS.C_USER_ID)).onDeleteCascade();
+    }
+
+    @Override
+    public void open(DBDatabaseDriver driver, Connection conn) {
+        super.open(driver, conn);
+
+        final int maxTries = 3;
+        for (int i = 0; i < maxTries; i++) {
+            try {
+                checkOpen();
+                break;
+            }
+            catch (DatabaseNotOpenException done) {
+                super.open(driver, conn);
+            }
+        }
     }
 }
