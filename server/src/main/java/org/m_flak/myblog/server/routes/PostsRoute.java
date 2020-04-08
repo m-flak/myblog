@@ -74,7 +74,10 @@ public class PostsRoute extends RouteHandler {
                 db.open(driv, con);
 
                 try {
-                    allDem.posts = getAllPosts(db, con);
+                    // This still doesn't help!!! PLEASE KILL ME!!!
+                    while (Objects.isNull(allDem.posts)) {
+                        allDem.posts = getAllPosts(db, con);
+                    }
                 } finally {
                     db.close(con);
                 }
@@ -122,7 +125,10 @@ public class PostsRoute extends RouteHandler {
                 db.open(driv, con);
 
                 try {
-                    allDem.posts = getAllSummaryPosts(db, con);
+                    // This still doesn't help!!! PLEASE KILL ME!!!
+                    while (Objects.isNull(allDem.posts)) {
+                        allDem.posts = getAllSummaryPosts(db, con);
+                    }
                 } finally {
                     db.close(con);
                 }
