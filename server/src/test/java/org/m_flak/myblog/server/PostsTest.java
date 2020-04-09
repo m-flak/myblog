@@ -28,7 +28,7 @@ public class PostsTest extends TestUsingWebDB {
                 ServerDatabase.inst().db().get()
         );
     }
-    
+
     @Test
     public void postsTest() throws Exception {
         pbtFixture.createMockUsers();
@@ -59,6 +59,9 @@ public class PostsTest extends TestUsingWebDB {
             HttpGet getSum = new HttpGet(postsSumURL);
             HttpGet getFullMarch = new HttpGet(postsFullInMarchURL);
 
+            //
+            // MODE_FULL
+            //
             var fullResponse = httpClient.execute(getFull);
             try {
                 assertEquals(200, fullResponse.getStatusLine().getStatusCode());
@@ -92,6 +95,9 @@ public class PostsTest extends TestUsingWebDB {
                 fullResponse.close();
             }
 
+            //
+            // MODE_SUMMARY
+            //
             var sumResponse = httpClient.execute(getSum);
             try {
                 assertEquals(200, sumResponse.getStatusLine().getStatusCode());
@@ -150,6 +156,96 @@ public class PostsTest extends TestUsingWebDB {
                 }
             } finally {
                 fullMarchResponse.close();
+            }
+        }
+        finally {
+            httpClient.close();
+        }
+    }
+
+    @Test
+    public void postsNoPostsTest() throws Exception {
+        final String postsFullURL =
+                new URIBuilder("http://127.0.0.1:8188"+webServer.getWebAppRoot()+"posts")
+                .addParameter("mode", Integer.toString(PostsRoute.MODE_FULL))
+                .build()
+                .toString();
+
+        final String postsSumURL =
+                new URIBuilder("http://127.0.0.1:8188"+webServer.getWebAppRoot()+"posts")
+                .addParameter("mode", Integer.toString(PostsRoute.MODE_SUMMARY))
+                .build()
+                .toString();
+
+        var httpClient = HttpClients.createDefault();
+        try {
+            HttpGet getFull = new HttpGet(postsFullURL);
+            HttpGet getSum = new HttpGet(postsSumURL);
+
+            //
+            // MODE_FULL
+            //
+            var fullResponse = httpClient.execute(getFull);
+            try {
+                assertEquals(200, fullResponse.getStatusLine().getStatusCode());
+                assertThat(
+                        fullResponse.getEntity().getContentType().getValue(),
+                        containsString("application/json")
+                );
+
+                JSONObject respJSON =
+                        new JSONObject(new JSONTokener(fullResponse.getEntity().getContent()));
+
+                try {
+                    assertThat(
+                            respJSON.getString("errorCode"),
+                            containsString("OK")
+                    );
+
+                    // GET THE NOTHING
+                    JSONArray postsJSON = respJSON.getJSONArray("data");
+                    assertEquals(1,  postsJSON.length());
+                    JSONObject blank = new JSONObject();
+                    assertEquals(blank.toString(), postsJSON.getJSONObject(0).toString());
+                } catch (JSONException je) {
+                    fail("MALFORMED JSON!\n" + je.getMessage());
+                }
+            }
+            finally {
+                fullResponse.close();
+            }
+
+            //
+            // MODE_SUMMARY
+            //
+            var sumResponse = httpClient.execute(getSum);
+            try {
+                assertEquals(200, sumResponse.getStatusLine().getStatusCode());
+                assertThat(
+                        sumResponse.getEntity().getContentType().getValue(),
+                        containsString("application/json")
+                );
+
+                JSONObject respJSON =
+                        new JSONObject(new JSONTokener(sumResponse.getEntity().getContent()));
+
+                try {
+                    assertThat(
+                            respJSON.getString("errorCode"),
+                            containsString("OK")
+                    );
+
+                    // GET THE NOTHING
+                    JSONArray postsJSON = respJSON.getJSONArray("data");
+                    assertEquals(1,  postsJSON.length());
+                    JSONObject blank = new JSONObject();
+                    assertEquals(blank.toString(), postsJSON.getJSONObject(0).toString());
+                } catch (JSONException je) {
+                    fail("MALFORMED JSON!\n" + je.getMessage());
+                }
+            }
+            finally {
+                sumResponse.close();
             }
         }
         finally {
