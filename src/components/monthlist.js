@@ -116,6 +116,6 @@ export class MonthList extends React.Component {
     }
 }
 MonthList.defaultProps = {
-    col: "2",
-    row: "2"
+    col: 2,
+    row: 2,
 }

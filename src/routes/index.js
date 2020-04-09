@@ -1,3 +1,4 @@
+export { FilteredPostsRoute } from './filteredpostsroute';
 export { HomeRoute } from './homeroute';
 export { NotFoundRoute } from './notfoundroute';
 export { LoginRoute } from './loginroute.js';

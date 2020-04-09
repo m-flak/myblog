@@ -1,0 +1,13 @@
+.FilterHeader {
+    display: flex;
+    justify-content: center;
+}
+
+.FilterHeader > * {
+    margin: 0.35em 0px 0.5em 1em;
+}
+
+.FilterHeader h3 {
+    border-bottom: solid 1px;
+    padding-bottom: 1px;
+}

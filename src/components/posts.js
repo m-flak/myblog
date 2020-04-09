@@ -16,7 +16,14 @@ export class Posts extends React.Component {
     }
 
     fetchPosts() {
-        getFromBackend('/posts', {mode: MODE_FULL}, (data) => {
+        var args = {mode: MODE_FULL};
+
+        if (Object.entries(this.props.filter).length > 0) {
+            // The backend expects m & y as the args.
+            Object.assign(args, {m: this.props.filter.month, y: this.props.filter.year});
+        }
+
+        getFromBackend('/posts', args, (data) => {
             try {
                 if (data instanceof Array) {
                     if (data.length === 0) {
@@ -85,7 +92,8 @@ export class Posts extends React.Component {
     }
 }
 Posts.defaultProps = {
+    filter: {},
     update: 0,
-    col: "1",
-    row: "1"
+    col: 1,
+    row: 1,
 }

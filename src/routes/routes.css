@@ -13,9 +13,7 @@
     grid-template-columns: 3fr 1fr;
     grid-gap: 0.75em;
     grid-auto-rows: min-content max-content;
-    padding-top: 1em;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding: 1rem;
 }
 
 .Layout-HR > div {
@@ -60,4 +58,19 @@
 
 .Layout-PR div.card, .Layout-PR div.card-body, .Layout-PR div.Post {
     min-height: inherit;
+}
+
+/** FilteredPostsRoute Styles **/
+.Layout-FPR {
+    display: grid;
+    grid-template-columns: minmax(100%, max-content);
+    grid-gap: 0.75em;
+    grid-auto-rows: min-content max-content;
+    padding: 1rem;
+}
+
+.Layout-FPR > div {
+    background-color: rgba(77, 77, 77, 0.25);
+    border-radius: 0.33em;
+    padding: 1px 1em 1px 1em;
 }

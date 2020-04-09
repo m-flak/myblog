@@ -27,6 +27,6 @@ export class AboutMe extends React.Component {
     }
 }
 AboutMe.defaultProps = {
-    col: "2",
-    row: "1"
+    col: 2,
+    row: 1,
 }
