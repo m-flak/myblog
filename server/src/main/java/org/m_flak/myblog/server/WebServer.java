@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.util.Properties;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
@@ -43,6 +44,13 @@ public class WebServer {
     public WebServer(String bindIP, int bindPort) {
         // Create Jetty instance
         webServer = new Server(new InetSocketAddress(bindIP, bindPort));
+
+        // Add an accept queue so we're not overloaded
+        for (var c : webServer.getConnectors()) {
+            if (c instanceof ServerConnector) {
+                ((ServerConnector) c).setAcceptQueueSize(ServerConstants.MAX_THREADS);
+            }
+        }
 
         try {
             // Load the `web.properties` file
