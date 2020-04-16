@@ -1,12 +1,15 @@
 import React from 'react';
 import { Post } from './post';
+import { FetchingComponent } from './fetchingcomponent';
 import { getFromBackend } from '../util';
 
 /* Refer to: org.m_flak.myblog.server.routes.PostsRoute
  */
 const MODE_FULL = 1;
 
-export class Posts extends React.Component {
+const ERROR_POST_TITLE = 'We couldn\'t fetch any posts.';
+
+export class Posts extends FetchingComponent {
     constructor(props) {
         super(props);
 
@@ -45,7 +48,7 @@ export class Posts extends React.Component {
                 this.setState({
                     posts: [
                         {
-                            title: 'We couldn\'t fetch any posts.', contents: e.message
+                            title: ERROR_POST_TITLE, contents: e.message
                         },
                     ],
                 });
@@ -55,26 +58,37 @@ export class Posts extends React.Component {
             this.setState({
                 posts: [
                     {
-                        title: 'We couldn\'t fetch any posts.', contents: error.message
+                        title: ERROR_POST_TITLE, contents: error.message
                     },
                 ],
             });
         });
     }
 
-    componentDidMount() {
+    // FROM: FetchingComponent
+    doFetch() {
         this.fetchPosts();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.update !== this.props.update) {
-            this.fetchPosts();
+    // FROM: FetchingComponent
+    setFetchedStateVarLength(theLength) {
+        var numPosts = theLength;
+
+        if (numPosts === 1) {
+            try {
+                const cond = this.states.posts[0].title.startsWith(ERROR_POST_TITLE);
+                numPosts = cond ? 0*numPosts : numPosts;
+            }
+            catch (e) {
+                numPosts = 0;
+            }
         }
 
-        // My server likes to return blank arrays `\.('_')./'
-        if (prevState.posts.length > this.state.posts.length) {
-            this.fetchPosts();
-        }
+        return numPosts;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        super.componentDidUpdate(prevProps, prevState);
     }
 
     render() {
@@ -94,6 +108,7 @@ export class Posts extends React.Component {
 Posts.defaultProps = {
     filter: {},
     update: 0,
+    fetchedStateVariable: 'posts',  // Override from FetchingComponent
     col: 1,
     row: 1,
 }

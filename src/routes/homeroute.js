@@ -10,9 +10,19 @@ export class HomeRoute extends React.Component {
             canPost: false,
             rowOffset: 0,
             updateDummy: 1,     // this is modified just to trigger re-render
+            numPosts: 0,
+            numMonthYears: 0,
         };
 
         this.handleCompose = this.handleCompose.bind(this);
+        this.handleFetchPosts = this.handleFetchPosts.bind(this);
+        this.handleFetchMonths = this.handleFetchMonths.bind(this);
+    }
+
+    modUpdateDummy() {
+        // Should variate 1 -> 3, 3 -> 1
+        var newVal = this.state.updateDummy ^ 2;
+        this.setState({updateDummy: newVal});
     }
 
     componentDidMount() {
@@ -27,9 +37,27 @@ export class HomeRoute extends React.Component {
 
     handleCompose(wasSuccessful) {
         if (wasSuccessful) {
-            // Should variate 1 -> 3, 3 -> 1
-            var newVal = this.state.updateDummy ^ 2;
-            this.setState({updateDummy: newVal});
+            this.modUpdateDummy();
+        }
+    }
+
+    handleFetchPosts(numFetched) {
+        if (numFetched > this.state.numPosts) {
+            this.setState({numPosts: numFetched});
+        }
+
+        if (numFetched !== 0 && this.state.numMonthYears === 0) {
+            this.modUpdateDummy();
+        }
+    }
+
+    handleFetchMonths(numFetched) {
+        if (numFetched > this.state.numMonthYears) {
+            this.setState({numMonthYears: numFetched});
+        }
+
+        if (numFetched !== 0 && this.state.numPosts === 0) {
+            this.modUpdateDummy();
         }
     }
 
@@ -38,9 +66,9 @@ export class HomeRoute extends React.Component {
             <div className="RoutePage">
               <div className="Layout-HR">
                 <NewPost onCompose={this.handleCompose} canPost={this.state.canPost} />
-                <Posts update={this.state.updateDummy} row={this.state.rowOffset+1} />
+                <Posts onUpdateFetch={this.handleFetchPosts} update={this.state.updateDummy} row={this.state.rowOffset+1} />
                 <AboutMe row={this.state.rowOffset+1} />
-                <MonthList row={this.state.rowOffset+2} />
+                <MonthList onUpdateFetch={this.handleFetchMonths} update={this.state.updateDummy} row={this.state.rowOffset+2} />
               </div>
             </div>
         );

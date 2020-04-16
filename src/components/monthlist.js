@@ -1,6 +1,7 @@
 import React from 'react';
 import * as datetime from 'node-datetime';
 import { getFromBackend } from '../util';
+import { FetchingComponent } from './fetchingcomponent';
 import { MonthListLink } from './monthlistlink';
 import './monthlist.css';
 
@@ -8,7 +9,7 @@ import './monthlist.css';
  */
  const MODE_SUMMARY = 2;
 
-export class MonthList extends React.Component {
+export class MonthList extends FetchingComponent {
     constructor(props) {
         super(props);
 
@@ -17,7 +18,7 @@ export class MonthList extends React.Component {
         };
     }
 
-    componentDidMount() {
+    fetchMonthYears() {
         getFromBackend('/posts', {mode: MODE_SUMMARY}, (data) => {
             if (data instanceof Array) {
                 // If we got an array with single blank object, then do nothing
@@ -83,6 +84,15 @@ export class MonthList extends React.Component {
         });
     }
 
+    // FROM: FetchingComponent
+    doFetch() {
+        this.fetchMonthYears();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        super.componentDidUpdate(prevProps, prevState);
+    }
+
     render() {
         if (this.state.monthYears.length === 0) {
             return (
@@ -118,4 +128,6 @@ export class MonthList extends React.Component {
 MonthList.defaultProps = {
     col: 2,
     row: 2,
+    update: 0,
+    fetchedStateVariable: 'monthYears', // Override from FetchingComponent
 }
