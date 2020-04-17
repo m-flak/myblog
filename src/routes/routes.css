@@ -16,7 +16,7 @@
     padding: 1rem;
 }
 
-.Layout-HR > div {
+.Layout-HR > div:not(.spinner-border) {
     background-color: rgba(77, 77, 77, 0.25);
     border-radius: 0.33em;
     padding: 1px 1em 1px 1em;

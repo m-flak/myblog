@@ -1,5 +1,6 @@
 import React from 'react';
 import { Session } from 'bc-react-session';
+import { Spinner } from 'reactstrap';
 import { AboutMe, Posts, MonthList, NewPost } from '../components';
 import './routes.css';
 
@@ -66,7 +67,9 @@ export class HomeRoute extends React.Component {
             <div className="RoutePage">
               <div className="Layout-HR">
                 <NewPost onCompose={this.handleCompose} canPost={this.state.canPost} />
-                <Posts onUpdateFetch={this.handleFetchPosts} update={this.state.updateDummy} row={this.state.rowOffset + 1} />
+                <Posts onUpdateFetch={this.handleFetchPosts} update={this.state.updateDummy} row={this.state.rowOffset + 1}>
+                    <Spinner style={{ position: 'absolute', top: '55vh', right: '50%', width: '5rem', height: '5rem' }} />
+                </Posts>
                 <AboutMe row={this.state.rowOffset + 1} />
                 <MonthList onUpdateFetch={this.handleFetchMonths} update={this.state.updateDummy} row={this.state.rowOffset + 2} />
               </div>

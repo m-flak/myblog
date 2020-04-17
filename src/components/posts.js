@@ -10,6 +10,21 @@ const MODE_FULL = 1;
 
 const ERROR_POST_TITLE = 'We couldn\'t fetch any posts.';
 
+/* **** FUTURE FIXME: When React no longer allows what's being done here....
+ ***************************** `\.('_')./' **********************************/
+function buildErrorHTML (errorMsg) {
+    const errorHTML = [
+        `<p>${errorMsg}</p>`,
+        '<br/>',
+        '<p>',
+        'If you believe this to be in error, you may try: ',
+        '<a href="javascript:window.location.reload();">reloading the page</a>.',
+        '</p>'
+    ];
+
+    return errorHTML.join('');
+}
+
 export class Posts extends FetchingComponent {
     constructor (props) {
         super(props);
@@ -49,7 +64,7 @@ export class Posts extends FetchingComponent {
                 this.setState({
                     posts: [
                         {
-                            title: ERROR_POST_TITLE, contents: e.message
+                            title: ERROR_POST_TITLE, contents: buildErrorHTML(e.message)
                         }
                     ]
                 });
@@ -59,7 +74,7 @@ export class Posts extends FetchingComponent {
             this.setState({
                 posts: [
                     {
-                        title: ERROR_POST_TITLE, contents: error.message
+                        title: ERROR_POST_TITLE, contents: buildErrorHTML(error.message)
                     }
                 ]
             });
@@ -92,9 +107,19 @@ export class Posts extends FetchingComponent {
         super.componentDidUpdate(prevProps, prevState);
     }
 
+    // A Spinner is our only child ;_~
+    displayChildrenOrNot () {
+        if (this.state.posts.length === 0) {
+            return this.props.children;
+        }
+
+        return null;
+    }
+
     render () {
         return (
             <>
+            {this.displayChildrenOrNot()}
             {this.state.posts.map((post, index) => {
                 return (
                     <div key={index} style={{ gridColumn: this.props.col, gridRow: this.props.row + index }}>
