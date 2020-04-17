@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'reactstrap'
 import { MONTHS } from '../util';
 import { FindRoutesURL } from '../router';
@@ -23,4 +24,10 @@ FilterHeader.defaultProps = {
     year: 2020,
     row: 1,
     col: 1
+}
+FilterHeader.propTypes = {
+    month: PropTypes.number,
+    year: PropTypes.number,
+    row: PropTypes.number,
+    col: PropTypes.number
 }

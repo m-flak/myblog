@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import { PostDate } from './postdate';
 import { FindRoutesURL } from '../router';
@@ -61,4 +62,12 @@ Post.defaultProps = {
     datePosted: '',
     contents: '',
     original: false
+}
+Post.propTypes = {
+    postID: PropTypes.number,
+    posterID: PropTypes.number,
+    title: PropTypes.string,
+    datePosted: PropTypes.string,
+    contents: PropTypes.string,
+    original: PropTypes.bool
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as datetime from 'node-datetime';
 import { getFromBackend } from '../util';
 import { FetchingComponent } from './fetchingcomponent';
@@ -80,7 +81,7 @@ export class MonthList extends FetchingComponent {
             }
         })
         .catch((error) => {
-
+            this.setState({ monthYears: [] });
         });
     }
 
@@ -100,7 +101,7 @@ export class MonthList extends FetchingComponent {
                     <h5>All Posts</h5>
                     <hr />
                     <p className="NothingToList">
-                        Nothing's here...
+                        Nothing&#39;s here...
                     </p>
                 </div>
             );
@@ -130,4 +131,8 @@ MonthList.defaultProps = {
     row: 2,
     update: 0,
     fetchedStateVariable: 'monthYears' // Override from FetchingComponent
+}
+MonthList.propTypes = {
+    col: PropTypes.number,
+    row: PropTypes.number
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Util } from 'reactstrap';
 import * as datetime from 'node-datetime';
 
 export class PostDate extends React.Component {
@@ -30,4 +32,8 @@ export class PostDate extends React.Component {
 }
 PostDate.defaultProps = {
     tag: 'h5'
+}
+PostDate.propTypes = {
+    tag: Util.tagPropType,
+    date: PropTypes.string
 }

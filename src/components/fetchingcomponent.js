@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import equal from 'fast-deep-equal';
 
 export class FetchingComponent extends React.Component {
@@ -51,4 +52,9 @@ export class FetchingComponent extends React.Component {
 FetchingComponent.defaultProps = {
     update: 0,
     fetchedStateVariable: 'component'
+}
+FetchingComponent.propTypes = {
+    update: PropTypes.number,
+    fetchedStateVariable: PropTypes.string,
+    onUpdateFetch: PropTypes.func
 }

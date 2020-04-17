@@ -13,8 +13,8 @@ export class NotFoundRoute extends React.Component {
                         <CardHeader><h4>Ooops!</h4></CardHeader>
                         <CardTitle><i>The requested page cannot be found!</i></CardTitle>
                         <CardText>
-                            We're unable to find <code>{window.location.pathname}</code>.
-                            The content you're looking for may no longer exist.
+                            We&#39;re unable to find <code>{window.location.pathname}</code>.
+                            The content you&#39;re looking for may no longer exist.
                             <br/>
                             Click <Link to="/">Here</Link> to return to the homepage.
                         </CardText>

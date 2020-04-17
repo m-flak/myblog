@@ -24,7 +24,7 @@ export class LogoutRoute extends React.Component {
                     Session.destroy();
                 })
                 .catch((error) => {
-
+                    Session.destroy();
                 });
             }
         }

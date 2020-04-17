@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Post } from './post';
 import { FetchingComponent } from './fetchingcomponent';
 import { getFromBackend } from '../util';
@@ -111,4 +112,12 @@ Posts.defaultProps = {
     fetchedStateVariable: 'posts', // Override from FetchingComponent
     col: 1,
     row: 1
+}
+Posts.propTypes = {
+    filter: PropTypes.exact({
+        month: PropTypes.number,
+        year: PropTypes.number
+    }),
+    col: PropTypes.number,
+    row: PropTypes.number
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import { Alert, Button, InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import { Session } from 'bc-react-session';
@@ -129,4 +130,10 @@ NewPost.defaultProps = {
     col: 1,
     row: 1,
     canPost: false
+}
+NewPost.propTypes = {
+    onCompose: PropTypes.func,
+    col: PropTypes.number,
+    row: PropTypes.number,
+    canPost: PropTypes.bool
 }
