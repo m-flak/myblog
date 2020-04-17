@@ -6,7 +6,7 @@ import * as url from 'url';
 /*
  * Ensure that a response is in the proper format (JSON)
  */
-function formatResponse(response) {
+function formatResponse (response) {
     var responseData;
 
     // Determine if our response was properly sent as json.
@@ -33,14 +33,14 @@ function formatResponse(response) {
 /*
  * Simply checks if a URL is a full URL.
  */
-function isFullURL(an_url) {
+function isFullURL (an_url) {
     var urlObject = url.parse(an_url, false, false);
     // A 'full' URL for the backend is http://blah:8188/
     var neededParts = ['protocol', 'host', 'hostname', 'port'];
     var isFull = true;
 
     for (const i in neededParts) {
-        let key = neededParts[i];
+        const key = neededParts[i];
         if (urlObject[key] === '' || urlObject[key] === undefined) {
             isFull = false;
             break;
@@ -53,7 +53,7 @@ function isFullURL(an_url) {
 /*
  * Creates a backend url from a requested resource (e.g.: '/request')
  */
-function backendURL(requested_resource) {
+function backendURL (requested_resource) {
     var dotenvURL = process.env.REACT_APP_BACKEND_URL;
 
     // dotenvURL is a full url.
@@ -63,7 +63,7 @@ function backendURL(requested_resource) {
 
     // dotenvURL is a relative path
     var serverURLObj = url.parse(window.location.href, false, false);
-    serverURLObj['pathname'] = '';
+    serverURLObj.pathname = '';
 
     // Create our backend query base url
     var backendURL = url.resolve(url.format(serverURLObj), dotenvURL);
@@ -78,7 +78,7 @@ function backendURL(requested_resource) {
  * dict_args -> an optional dictionary object containing parameters for the URL
  * callback -> callback(response_data)
  */
-export function getFromBackend(api_url, dict_args, callback) {
+export function getFromBackend (api_url, dict_args, callback) {
     var queryURL = backendURL(api_url);
 
     // Check for parameters to add as a query string
@@ -87,7 +87,7 @@ export function getFromBackend(api_url, dict_args, callback) {
         if (Object.entries(dict_args).length > 0) {
             var queryString = q_string.stringify(dict_args, {});
 
-            queryURL = queryURL+'?'+queryString;
+            queryURL = queryURL + '?' + queryString;
         }
     }
 
@@ -111,7 +111,7 @@ export function getFromBackend(api_url, dict_args, callback) {
  * post_what -> a javascript object containing information to send
  * callback -> callback(response_data)
  */
-export function postToBackend(api_url, post_what, callback) {
+export function postToBackend (api_url, post_what, callback) {
     var postURL = backendURL(api_url);
 
     return axios.request({

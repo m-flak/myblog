@@ -3,8 +3,8 @@ import { FindRoutesURL } from '../router';
 import { MONTHS } from '../util';
 
 export class MonthListLink extends React.Component {
-    render() {
-        const linkCaption = `${MONTHS[this.props.month-1]}, ${this.props.year}`;
+    render () {
+        const linkCaption = `${MONTHS[this.props.month - 1]}, ${this.props.year}`;
 
         return (
             <a href={`${(() => new FindRoutesURL('Posts').get())()}${this.props.year}/${this.props.month}`}>
@@ -15,5 +15,5 @@ export class MonthListLink extends React.Component {
 }
 MonthListLink.defaultProps = {
     month: 1,
-    year: 2020,
+    year: 2020
 };

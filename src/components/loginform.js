@@ -1,16 +1,16 @@
 import React from 'react';
-import {Session} from 'bc-react-session';
+import { Session } from 'bc-react-session';
 import { RouteURL } from '../router.js';
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
 import { getFromBackend, postToBackend, encryptPassword } from '../util';
 import './loginform.css';
 
 export class LoginForm extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             loginFailed: false,
-            loginError: '',
+            loginError: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,39 +18,39 @@ export class LoginForm extends React.Component {
         this.passRef = React.createRef();
     }
 
-    handleSubmit(event) {
+    handleSubmit (event) {
         event.preventDefault();
         getFromBackend('/request', {}, (data) => {
             const pubKey = data;
             const rU = this.userRef.current;
             const rP = this.passRef.current;
 
-            postToBackend('/login', {user: rU.value, pass: encryptPassword(pubKey, rP.value)}, (data) => {
+            postToBackend('/login', { user: rU.value, pass: encryptPassword(pubKey, rP.value) }, (data) => {
                 // Establish our 'Session'
                 Session.start({
                     payload: {
                         userName: rU.value,
-                        accessToken: data,
-                    },
+                        accessToken: data
+                    }
                 });
 
                 this.props.history.push(new RouteURL('/').get());
             })
             .catch((error) => {
                 console.log(error.stack);
-                this.setState({loginFailed: true});
-                this.setState({loginError: error.toString()});
+                this.setState({ loginFailed: true });
+                this.setState({ loginError: error.toString() });
             });
         })
         .catch((error) => {
             console.log(error.stack);
-            this.setState({loginFailed: true});
-            this.setState({loginError: error.toString()});
+            this.setState({ loginFailed: true });
+            this.setState({ loginError: error.toString() });
         });
     }
 
-    render() {
-        let msg_display_class = (failed) => {
+    render () {
+        const msg_display_class = (failed) => {
             if (failed) {
                 return 'DisplayLoginFail';
             }

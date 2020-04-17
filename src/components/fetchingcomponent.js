@@ -2,27 +2,27 @@ import React from 'react';
 import equal from 'fast-deep-equal';
 
 export class FetchingComponent extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {};
     }
 
-    doFetch() {
-        return;
+    doFetch () {
+
     }
 
-    setFetchedStateVarLength(theLength) {
+    setFetchedStateVarLength (theLength) {
         return theLength;
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.doFetch();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        let prevStateFetched = prevState[this.props.fetchedStateVariable];
-        let currStateFetched = this.state[this.props.fetchedStateVariable];
+    componentDidUpdate (prevProps, prevState) {
+        const prevStateFetched = prevState[this.props.fetchedStateVariable];
+        const currStateFetched = this.state[this.props.fetchedStateVariable];
 
         if (prevProps.update !== this.props.update) {
             if (equal(prevState, this.state)) {
@@ -42,7 +42,7 @@ export class FetchingComponent extends React.Component {
 
         if (this.props.onUpdateFetch !== undefined && this.props.onUpdateFetch !== null) {
             if (numWhatever > 0) {
-                let onUpdateFetch = this.props.onUpdateFetch;
+                const onUpdateFetch = this.props.onUpdateFetch;
                 onUpdateFetch(numWhatever);
             }
         }
@@ -50,5 +50,5 @@ export class FetchingComponent extends React.Component {
 }
 FetchingComponent.defaultProps = {
     update: 0,
-    fetchedStateVariable: 'component',
+    fetchedStateVariable: 'component'
 }

@@ -4,7 +4,7 @@ import { LoginFormWithRouter } from '../components';
 import './routes.css';
 
 export class LoginRoute extends React.Component {
-    render() {
+    render () {
         return (
             <div className="RoutePage">
               <div className="Layout-LR">

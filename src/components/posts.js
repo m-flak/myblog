@@ -10,20 +10,20 @@ const MODE_FULL = 1;
 const ERROR_POST_TITLE = 'We couldn\'t fetch any posts.';
 
 export class Posts extends FetchingComponent {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
-            posts: [],
+            posts: []
         };
     }
 
-    fetchPosts() {
-        var args = {mode: MODE_FULL};
+    fetchPosts () {
+        var args = { mode: MODE_FULL };
 
         if (Object.entries(this.props.filter).length > 0) {
             // The backend expects m & y as the args.
-            Object.assign(args, {m: this.props.filter.month, y: this.props.filter.year});
+            Object.assign(args, { m: this.props.filter.month, y: this.props.filter.year });
         }
 
         getFromBackend('/posts', args, (data) => {
@@ -38,7 +38,7 @@ export class Posts extends FetchingComponent {
                     else if (data.length === 1 && data[0].hasOwnProperty('postID') === false) {
                         throw new Error('There are no posts yet for this blog.');
                     }
-                    this.setState({posts: data});
+                    this.setState({ posts: data });
                 }
                 else {
                     throw new Error('Backend returned malformed list.');
@@ -49,8 +49,8 @@ export class Posts extends FetchingComponent {
                     posts: [
                         {
                             title: ERROR_POST_TITLE, contents: e.message
-                        },
-                    ],
+                        }
+                    ]
                 });
             }
         })
@@ -59,25 +59,25 @@ export class Posts extends FetchingComponent {
                 posts: [
                     {
                         title: ERROR_POST_TITLE, contents: error.message
-                    },
-                ],
+                    }
+                ]
             });
         });
     }
 
     // FROM: FetchingComponent
-    doFetch() {
+    doFetch () {
         this.fetchPosts();
     }
 
     // FROM: FetchingComponent
-    setFetchedStateVarLength(theLength) {
+    setFetchedStateVarLength (theLength) {
         var numPosts = theLength;
 
         if (numPosts === 1) {
             try {
                 const cond = this.states.posts[0].title.startsWith(ERROR_POST_TITLE);
-                numPosts = cond ? 0*numPosts : numPosts;
+                numPosts = cond ? 0 * numPosts : numPosts;
             }
             catch (e) {
                 numPosts = 0;
@@ -87,16 +87,16 @@ export class Posts extends FetchingComponent {
         return numPosts;
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate (prevProps, prevState) {
         super.componentDidUpdate(prevProps, prevState);
     }
 
-    render() {
+    render () {
         return (
             <>
             {this.state.posts.map((post, index) => {
                 return (
-                    <div key={index} style={{gridColumn: this.props.col, gridRow: this.props.row+index}}>
+                    <div key={index} style={{ gridColumn: this.props.col, gridRow: this.props.row + index }}>
                         <Post postID={post.postID} posterID={post.posterID} title={post.title} datePosted={post.datePosted} contents={post.contents} />
                     </div>
                 );
@@ -108,7 +108,7 @@ export class Posts extends FetchingComponent {
 Posts.defaultProps = {
     filter: {},
     update: 0,
-    fetchedStateVariable: 'posts',  // Override from FetchingComponent
+    fetchedStateVariable: 'posts', // Override from FetchingComponent
     col: 1,
-    row: 1,
+    row: 1
 }

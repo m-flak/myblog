@@ -5,40 +5,40 @@ import { getFromBackend } from '../util';
 import './routes.css';
 
 export class PostRoute extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
-            post: {},
+            post: {}
         };
     }
 
-    componentDidMount() {
-        const {match: {params}} = this.props;
+    componentDidMount () {
+        const { match: { params } } = this.props;
         const errorPost = {
             postID: -1,
             posterID: -1,
             title: 'This Post Doesn\'t Exist.',
             datePosted: '',
-            contents: 'Please check the URL and try again.',
+            contents: 'Please check the URL and try again.'
         };
 
-        getFromBackend('/viewpost', {id: params.postID}, (data) => {
+        getFromBackend('/viewpost', { id: params.postID }, (data) => {
             if (data.hasOwnProperty('postID') === true) {
-                this.setState({post: data});
+                this.setState({ post: data });
             }
             else {
-                this.setState({post: errorPost});
+                this.setState({ post: errorPost });
             }
         })
         .catch((error) => {
             var errorMsgPost = errorPost;
-            errorMsgPost.contents = "ERROR: "+error.message;
-            this.setState({post: errorMsgPost});
+            errorMsgPost.contents = 'ERROR: ' + error.message;
+            this.setState({ post: errorMsgPost });
         });
     }
 
-    render() {
+    render () {
         return (
             <div className="RoutePage">
               <div className="Layout-PR">

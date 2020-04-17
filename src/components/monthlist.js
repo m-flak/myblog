@@ -10,16 +10,16 @@ import './monthlist.css';
  const MODE_SUMMARY = 2;
 
 export class MonthList extends FetchingComponent {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
-            monthYears: [],
+            monthYears: []
         };
     }
 
-    fetchMonthYears() {
-        getFromBackend('/posts', {mode: MODE_SUMMARY}, (data) => {
+    fetchMonthYears () {
+        getFromBackend('/posts', { mode: MODE_SUMMARY }, (data) => {
             if (data instanceof Array) {
                 // If we got an array with single blank object, then do nothing
                 if (data.length === 1 && data[0].hasOwnProperty('postID') === false) {
@@ -76,27 +76,27 @@ export class MonthList extends FetchingComponent {
                     return 0;
                 });
 
-                this.setState({monthYears: monthYears});
+                this.setState({ monthYears: monthYears });
             }
         })
         .catch((error) => {
-            return;
+
         });
     }
 
     // FROM: FetchingComponent
-    doFetch() {
+    doFetch () {
         this.fetchMonthYears();
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate (prevProps, prevState) {
         super.componentDidUpdate(prevProps, prevState);
     }
 
-    render() {
+    render () {
         if (this.state.monthYears.length === 0) {
             return (
-                <div style={{gridColumn: this.props.col, gridRow: this.props.row}}>
+                <div style={{ gridColumn: this.props.col, gridRow: this.props.row }}>
                     <h5>All Posts</h5>
                     <hr />
                     <p className="NothingToList">
@@ -107,7 +107,7 @@ export class MonthList extends FetchingComponent {
         }
 
         return (
-            <div style={{gridColumn: this.props.col, gridRow: this.props.row}}>
+            <div style={{ gridColumn: this.props.col, gridRow: this.props.row }}>
                 <h5>All Posts</h5>
                 <hr />
                 <div className="MonthList">
@@ -129,5 +129,5 @@ MonthList.defaultProps = {
     col: 2,
     row: 2,
     update: 0,
-    fetchedStateVariable: 'monthYears', // Override from FetchingComponent
+    fetchedStateVariable: 'monthYears' // Override from FetchingComponent
 }

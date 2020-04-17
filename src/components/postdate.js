@@ -2,7 +2,7 @@ import React from 'react';
 import * as datetime from 'node-datetime';
 
 export class PostDate extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         var actualDate;
@@ -20,8 +20,8 @@ export class PostDate extends React.Component {
         this.formattedDate = splitDate.join(' ');
     }
 
-    render() {
-        const {tag: Tag} = this.props;
+    render () {
+        const { tag: Tag } = this.props;
 
         return (
             <Tag>{this.formattedDate}</Tag>
@@ -29,5 +29,5 @@ export class PostDate extends React.Component {
     }
 }
 PostDate.defaultProps = {
-    tag: 'h5',
+    tag: 'h5'
 }

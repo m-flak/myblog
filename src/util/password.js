@@ -1,11 +1,11 @@
 import NodeRSA from 'node-rsa';
 
-export function encryptPassword(pubKey, password) {
+export function encryptPassword (pubKey, password) {
     // The server does not send the key with the header & trailer.
-    let formattedKey = (key) => {
+    const formattedKey = (key) => {
         const head = '-----BEGIN PUBLIC KEY-----\n';
         const trail = '\n-----END PUBLIC KEY-----';
-        return head+key+trail;
+        return head + key + trail;
     };
 
     // The Java backend is SUPER picky; let's appease it.

@@ -1,31 +1,30 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import {Session} from 'bc-react-session';
+import { Session } from 'bc-react-session';
 import { getFromBackend } from '../util';
 import './routes.css';
 
 export class LogoutRoute extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.session = Session.get();
     }
 
-    render() {
+    render () {
         /*****************************
          PERFORM THE LOGOUT HERE
          *****************************/
-        let session = this.session;
+        const session = this.session;
         if (session.isValid) {
             const payload = Session.getPayload();
 
             if (payload !== null || payload !== undefined) {
                 getFromBackend('/logout', { tok: payload.accessToken }, (data) => {
                     Session.destroy();
-                    return;
                 })
                 .catch((error) => {
-                    return;
+
                 });
             }
         }

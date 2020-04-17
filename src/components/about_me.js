@@ -1,24 +1,24 @@
 import React from 'react';
 
 export class AboutMe extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
-            aboutMe: '',
+            aboutMe: ''
         };
     }
 
-    componentDidMount() {
-        //TODO: Replace with query to backend
+    componentDidMount () {
+        // TODO: Replace with query to backend
         this.setState({
-            aboutMe: 'Don\'t forget to replace me with a query to the backend!',
+            aboutMe: 'Don\'t forget to replace me with a query to the backend!'
         });
     }
 
-    render() {
+    render () {
         return (
-            <div style={{gridColumn: this.props.col, gridRow: this.props.row}}>
+            <div style={{ gridColumn: this.props.col, gridRow: this.props.row }}>
                 <h5>About Me</h5>
                 <hr/>
                 <p>{this.state.aboutMe}</p>
@@ -28,5 +28,5 @@ export class AboutMe extends React.Component {
 }
 AboutMe.defaultProps = {
     col: 2,
-    row: 1,
+    row: 1
 }

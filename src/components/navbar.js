@@ -1,16 +1,16 @@
 import React from 'react';
 import { Navbar, Nav, NavItem, NavLink, NavbarBrand } from 'reactstrap';
-import {Session} from 'bc-react-session';
+import { Session } from 'bc-react-session';
 import { Routes } from '../routes';
 import { FindRoutesURL, RouteURL } from '../router';
 import './navbar.css';
 
 export class BlogNavBar extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
-            logged_in: false,
+            logged_in: false
         };
 
         this.routes = Routes;
@@ -18,29 +18,29 @@ export class BlogNavBar extends React.Component {
         this.loggedIn = this.loggedIn.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount () {
         Session.onChange(this.loggedIn);
 
         const session = Session.get();
 
         if (session.isValid) {
             this.setState({
-                logged_in: true,
+                logged_in: true
             });
         }
         else {
             this.setState({
-                logged_in: false,
+                logged_in: false
             });
         }
     }
 
-    loggedIn(session) {
+    loggedIn (session) {
         // Because the navbar is in a separate element, I have to do this. :/
         window.location.reload(false);
     }
 
-    render() {
+    render () {
         return (
             <div className="blog-nb-container">
                 <Navbar className="blog-nav-bar" color="dark" dark>
@@ -49,7 +49,7 @@ export class BlogNavBar extends React.Component {
                     </NavbarBrand>
                     <Nav>
                         {this.routes.map((route, index) => {
-                            let rt = route;
+                            const rt = route;
 
                             // Mutate navigability based on user session status
                             if (rt.name === 'Login' && this.state.logged_in) {

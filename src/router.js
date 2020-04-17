@@ -1,9 +1,10 @@
 import React from 'react';
+import * as url from 'url';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Routes, HomeRoute, LoginRoute, LogoutRoute, PostRoute, FilteredPostsRoute, NotFoundRoute } from './routes';
 
 /** Returns from dotenv: REACT_APP_BASENAME=$npm_package_homepage **/
-function find_base_name() {
+function find_base_name () {
     var base_name = process.env.REACT_APP_BASENAME;
 
     // (OPTIONAL) Check package.json for 'homepage'
@@ -15,16 +16,16 @@ function find_base_name() {
 
 /** Apply the route basename to a path **/
 export class RouteURL {
-    constructor(route_path) {
+    constructor (route_path) {
         this.path = route_path;
         this.basename = find_base_name();
     }
 
-    get() {
+    get () {
         if (this.basename === null) {
             return this.path;
         }
-        var url = require('url');
+
         return url.resolve(this.basename, this.path);
     }
 }
@@ -33,9 +34,9 @@ export class RouteURL {
  *  An invalid, non-existent named route gens a path for '/'
  **/
 export class FindRoutesURL extends RouteURL {
-    constructor(find_route_name) {
+    constructor (find_route_name) {
         var path = '/';
-        let route = Routes.filter(r => r.name === find_route_name);
+        const route = Routes.filter(r => r.name === find_route_name);
 
         if (route.length !== 0) {
             path = route[0].path;
@@ -46,9 +47,9 @@ export class FindRoutesURL extends RouteURL {
 }
 
 export default class AppRouter extends React.Component {
-    render() {
+    render () {
         return (
-            <div style={{height: '100%'}}>
+            <div style={{ height: '100%' }}>
                 <BrowserRouter basename={find_base_name()}>
                     <Switch>
                         <Route exact path="/" component={HomeRoute} />

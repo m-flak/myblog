@@ -8,21 +8,21 @@ import './post.css';
  * This is THE very first snippet I've ever copied from StackOverflow,|
  *                                                                   \/
  */
-function isHTML(str) {
-    var doc = new DOMParser().parseFromString(str, "text/html");
+function isHTML (str) {
+    var doc = new DOMParser().parseFromString(str, 'text/html');
     return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
 }
 
 export class Post extends React.Component {
-    render() {
-        let fragment = (contents) => {
+    render () {
+        const fragment = (contents) => {
             if (!isHTML(contents)) {
                 return contents;
             }
             return parse(contents);
         };
 
-        let footer_hide = (default_class) => {
+        const footer_hide = (default_class) => {
             if (this.props.original === true) {
                 if (default_class === '') {
                     return 'HidePostFooter';
@@ -60,5 +60,5 @@ Post.defaultProps = {
     title: '',
     datePosted: '',
     contents: '',
-    original: false,
+    original: false
 }

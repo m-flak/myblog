@@ -23,5 +23,19 @@
         "react"
     ],
     "rules": {
+        "brace-style": "off",
+        "camelcase": "off",
+        "comma-dangle": "warn",
+        "indent": "off",
+        "object-curly-spacing": "warn",
+        "prefer-const": "warn",
+        "quotes": "warn",
+        "semi": "off",
+        "space-before-function-paren": "warn"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

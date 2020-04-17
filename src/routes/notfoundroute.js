@@ -4,7 +4,7 @@ import { Card, CardBody, CardHeader, CardTitle, CardText } from 'reactstrap';
 import './routes.css';
 
 export class NotFoundRoute extends React.Component {
-    render() {
+    render () {
         return (
             <div className="RoutePage">
               <div className="Layout-NFR">
