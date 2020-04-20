@@ -14,10 +14,7 @@ import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.invalidateT
 import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.fetchUserToken;
 import static org.m_flak.myblog.server.db.methods.AccessTokenMethods.userTokenExpired;
 
-public class WebAuthTestsFixture {
-    protected DBDatabaseDriver ourDriver;
-    protected Connection ourConn;
-    protected Database ourDB;
+public class WebAuthTestsFixture extends DBFixtureBase {
     protected PasswordEncryptor ourPE;
 
     public String tokenUser1;
@@ -38,9 +35,7 @@ public class WebAuthTestsFixture {
                                                    };
 
     public WebAuthTestsFixture(DBDatabaseDriver driver, Connection connection, Database db) {
-        ourDriver = driver;
-        ourConn = connection;
-        ourDB = db;
+        super(driver, connection, db);
         ourPE = new PasswordEncryptor();
     }
 

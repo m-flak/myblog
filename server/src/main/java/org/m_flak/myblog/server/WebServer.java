@@ -92,6 +92,11 @@ public class WebServer {
         // Register all routes (or contexts as jetty calls them)
         // We set them as children to the root context to allow any application root
 
+        // AboutRoute - Get the blog poster's `About Me`
+        ContextHandler aboutMeContext = webRootContext.addContext(getWebAppRoot()+"about", "");
+        aboutMeContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
+        aboutMeContext.setHandler(new AboutRoute());
+
         // PostStoryRoute - Posts a story
         ContextHandler postStoryContext = webRootContext.addContext(getWebAppRoot()+"poststory", "");
         postStoryContext.setAllowNullPathInfo(true);    // <-- Required for POST requests

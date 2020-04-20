@@ -22,6 +22,7 @@ public class Database extends DBDatabase {
         public final DBTableColumn C_EMAIL;
         public final DBTableColumn C_ABOUT;
         public final DBTableColumn C_PASSWORD;
+        public final DBTableColumn C_IS_POSTER;
 
 
         public Users(DBDatabase db) {
@@ -32,6 +33,7 @@ public class Database extends DBDatabase {
             C_EMAIL = addColumn("EMAIL", DataType.CHAR, 32, true);
             C_ABOUT = addColumn("ABOUT_ME", DataType.CLOB, 0, false);
             C_PASSWORD = addColumn("PASSWORD", DataType.BLOB, 0, false);
+            C_IS_POSTER = addColumn("IS_POSTER", DataType.BOOL, 0, true, Boolean.valueOf(false));
 
             setPrimaryKey(C_USER_ID);
             addIndex("USER_ID_IDX", true, new DBColumn[] { C_USER_ID });

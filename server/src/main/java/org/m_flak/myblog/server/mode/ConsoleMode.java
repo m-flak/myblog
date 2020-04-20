@@ -72,6 +72,8 @@ public class ConsoleMode implements RunMode {
                 String email = "";
                 String password = "";
                 String aboutUser = "";
+                String isPoster = "";
+                boolean isPosterBool = false;
 
                 // User name
                 while (true) {
@@ -147,6 +149,32 @@ public class ConsoleMode implements RunMode {
                     }
                 }
 
+                while (true) {
+                    try {
+                        System.out.println("Is this user the poster of the blog? [yes/no]:");
+                        isPoster = userInput.nextLine();
+                    }
+                    catch (InputMismatchException e) {
+                        System.out.println("Error: "+e.getMessage());
+                    }
+                    finally {
+                        if (isPoster.length() > 0) {
+                            if (isPoster.contains("yes")) {
+                                isPosterBool = true;
+                                break;
+                            }
+                            else if (isPoster.contains("no")) {
+                                isPosterBool = false;
+                                break;
+                            }
+                            else {
+                                System.out.println("Please enter 'yes' or 'no'.");
+                            }
+                        }
+                        continue;
+                    }
+                }
+
                 this.log.info(String.format("Create User: '%s' w/ address '%s'.",
                                             username,
                                             email
@@ -156,6 +184,7 @@ public class ConsoleMode implements RunMode {
                 final String finEmail = email;
                 final EncryptedPassword finPass = pass;
                 final String finAbout = aboutUser;
+                final boolean finIsPoster = isPosterBool;
 
                 ServerDatabase.inst().runOnDB(new Runnable() {
                     @Override
@@ -171,6 +200,7 @@ public class ConsoleMode implements RunMode {
                             finEmail,
                             finAbout,
                             finPass.getPassword(),
+                            finIsPoster,
                             db,
                             con
                         );
