@@ -103,6 +103,31 @@ export class Posts extends FetchingComponent {
         return numPosts;
     }
 
+    shouldCallUpdateFetch () {
+        var serversPostCount = window.sessionStorage.getItem('serverPostCount');
+
+        if (serversPostCount !== null && serversPostCount > 0) {
+            return true;
+        }
+        else if (serversPostCount !== null && serversPostCount === 0) {
+            return false;
+        }
+
+        const pcPromise = new Promise((resolve, reject) => {
+            getFromBackend('/postcount', {}, (data) => {
+                resolve(Number(data));
+            })
+            .catch((error) => {
+                resolve(0);
+            });
+        });
+
+        return pcPromise.then((value) => {
+            window.sessionStorage.setItem('serverPostCount', value);
+            return value > 0 ? true : false;
+        });
+    }
+
     componentDidUpdate (prevProps, prevState) {
         super.componentDidUpdate(prevProps, prevState);
     }

@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 import org.eclipse.jetty.server.Request;
 
@@ -86,8 +87,16 @@ public class ViewPostRoute extends RouteHandler {
         });
 
         var resp = new ResponseVPR();
-        resp.rErr = "OK";
-        resp.rData = new JSONObject(thePost.thePost);
+
+        // Handle invalid posts
+        if (Objects.isNull(thePost.thePost)) {
+            resp.rErr = "FAIL";
+            resp.rData = new JSONObject();
+        }
+        else {
+            resp.rErr = "OK";
+            resp.rData = new JSONObject(thePost.thePost);
+        }
 
         httpResponse.setContentType("application/json;charset=utf-8");
         httpResponse.getWriter().print(new RouteResponse(resp));

@@ -107,6 +107,11 @@ public class WebServer {
         postsContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
         postsContext.setHandler(new PostsRoute());
 
+        // PostCountRoute - Get the count of posts
+        ContextHandler postCountContext = webRootContext.addContext(getWebAppRoot()+"postcount", "");
+        postCountContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's
+        postCountContext.setHandler(new PostCountRoute());
+
         // ViewPostRoute - Fetches a post from the DB into json
         ContextHandler viewPostContext = webRootContext.addContext(getWebAppRoot()+"viewpost", "");
         viewPostContext.setAllowNullPathInfo(true);        // <-- PREVENT HTTP 302's

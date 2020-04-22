@@ -23,6 +23,10 @@ export class FetchingComponent extends FetchingComponentBase {
         return theLength;
     }
 
+    shouldCallUpdateFetch () {
+        return false;
+    }
+
     componentDidUpdate (prevProps, prevState) {
         const prevStateFetched = prevState[this.props.fetchedStateVariable];
         const currStateFetched = this.state[this.props.fetchedStateVariable];
@@ -44,7 +48,8 @@ export class FetchingComponent extends FetchingComponentBase {
         var numWhatever = this.setFetchedStateVarLength(currStateFetched.length);
 
         if (this.props.onUpdateFetch !== undefined && this.props.onUpdateFetch !== null) {
-            if (numWhatever > 0) {
+            // More arcane stuff, like if there are posts but we haven't got them.
+            if (numWhatever > 0 || this.shouldCallUpdateFetch()) {
                 const onUpdateFetch = this.props.onUpdateFetch;
                 onUpdateFetch(numWhatever);
             }

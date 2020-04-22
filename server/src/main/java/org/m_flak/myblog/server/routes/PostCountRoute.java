@@ -9,10 +9,10 @@ import org.eclipse.jetty.server.Request;
 
 import org.m_flak.myblog.server.db.ServerDatabase;
 
-import static org.m_flak.myblog.server.db.methods.UserMethods.getPostersAboutMe;
+import static org.m_flak.myblog.server.db.methods.PostMethods.countPosts;
 
-public class AboutRoute extends RouteHandler {
-    private static class ResponseAR implements RouteResponse.Response<String> {
+public class PostCountRoute extends RouteHandler {
+    private static class ResponsePCR implements RouteResponse.Response<String> {
         private String rErr;
         private String rData;
 
@@ -27,11 +27,11 @@ public class AboutRoute extends RouteHandler {
         }
     }
 
-    private static class AboutMe {
-        public String aboutMe;
+    private static class PostCount {
+        public long count;
 
-        public AboutMe() {
-            aboutMe = "";
+        public PostCount() {
+            count = 0L;
         }
     }
 
@@ -41,7 +41,7 @@ public class AboutRoute extends RouteHandler {
         setupCORS(httpResponse);
         request.setHandled(true);
 
-        final AboutMe theAboutMe = new AboutMe();
+        final PostCount ourCount = new PostCount();
 
         ServerDatabase.inst().runOnDB(new Runnable() {
             @Override
@@ -53,7 +53,7 @@ public class AboutRoute extends RouteHandler {
                 db.open(driv, con);
 
                 try {
-                    theAboutMe.aboutMe = getPostersAboutMe(db, con);
+                    ourCount.count = countPosts(db, con);
                 }
                 finally {
                     db.close(con);
@@ -61,9 +61,9 @@ public class AboutRoute extends RouteHandler {
             }
         });
 
-        var resp = new ResponseAR();
+        var resp = new ResponsePCR();
         resp.rErr = "OK";
-        resp.rData = theAboutMe.aboutMe;
+        resp.rData = Long.toString(ourCount.count);
 
         httpResponse.setContentType("application/json;charset=utf-8");
         httpResponse.getWriter().print(new RouteResponse(resp));

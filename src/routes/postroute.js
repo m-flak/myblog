@@ -33,7 +33,7 @@ export class PostRoute extends React.Component {
         })
         .catch((error) => {
             var errorMsgPost = errorPost;
-            errorMsgPost.contents = 'ERROR: ' + error.message;
+            errorMsgPost.contents = errorMsgPost.contents + 'ERROR: ' + error.message;
             this.setState({ post: errorMsgPost });
         });
     }
