@@ -2,23 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import equal from 'fast-deep-equal';
 
-export class FetchingComponent extends React.Component {
+export class FetchingComponentBase extends React.Component {
+    doFetch () {
+
+    }
+
+    componentDidMount () {
+        this.doFetch();
+    }
+}
+
+export class FetchingComponent extends FetchingComponentBase {
     constructor (props) {
         super(props);
 
         this.state = {};
     }
 
-    doFetch () {
-
-    }
-
     setFetchedStateVarLength (theLength) {
         return theLength;
-    }
-
-    componentDidMount () {
-        this.doFetch();
     }
 
     componentDidUpdate (prevProps, prevState) {

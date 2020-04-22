@@ -1,6 +1,8 @@
 import React from 'react';
+import { FetchingComponentBase } from './fetchingcomponent';
+import { getFromBackend } from '../util';
 
-export class AboutMe extends React.Component {
+export class AboutMe extends FetchingComponentBase {
     constructor (props) {
         super(props);
 
@@ -9,10 +11,12 @@ export class AboutMe extends React.Component {
         };
     }
 
-    componentDidMount () {
-        // TODO: Replace with query to backend
-        this.setState({
-            aboutMe: 'Don\'t forget to replace me with a query to the backend!'
+    doFetch () {
+        getFromBackend('/about', {}, (data) => {
+            this.setState({aboutMe: data});
+        })
+        .catch((error) => {
+            this.setState({aboutMe: error.message});
         });
     }
 

@@ -92,7 +92,7 @@ export class Posts extends FetchingComponent {
 
         if (numPosts === 1) {
             try {
-                const cond = this.states.posts[0].title.startsWith(ERROR_POST_TITLE);
+                const cond = this.state.posts[0].title.startsWith(ERROR_POST_TITLE);
                 numPosts = cond ? 0 * numPosts : numPosts;
             }
             catch (e) {
