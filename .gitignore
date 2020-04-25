@@ -4,6 +4,7 @@
 server/target/*
 server/dependency-reduced-pom.xml
 server/src/main/resources/keystore.jks
+server/src/main/resources/keystore.jks.bak
 server/src/test/resources/keystore.jks
 server/src/test/resources/jks.properties
 server/src/test/resources/web.properties
@@ -11,6 +12,14 @@ server/src/test/resources/web.properties
 # intellij files for server
 server/.idea
 server.iml
+
+# configured files
+config/database_users.sql
+config/database.xml
+config/jks.properties
+config/package.json
+config/pom.xml
+config/web.properties
 
 # dependencies
 /node_modules
@@ -25,7 +34,8 @@ server.iml
 
 # misc
 .DS_Store
-.env
+/.env
+/.env_backup
 .env.local
 .env.development.local
 .env.test.local

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.m_flak.myblog.server</groupId>
+  <artifactId>server</artifactId>
+  <version>1.0</version>
+
+  <name>server</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>13</maven.compiler.source>
+    <maven.compiler.target>13</maven.compiler.target>
+    <maven.compiler.release>13</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20190722</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-server</artifactId>
+          <version>9.4.26.v20200117</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.collections</groupId>
+          <artifactId>eclipse-collections-api</artifactId>
+          <version>10.1.0</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.collections</groupId>
+          <artifactId>eclipse-collections</artifactId>
+          <version>10.1.0</version>
+      </dependency>
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>8.0.17</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.empire-db</groupId>
+          <artifactId>empire-db</artifactId>
+          <version>2.4.7</version>
+      </dependency>
+      <!-- Testing Dependencies BELOW -->
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.11</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <version>4.5.11</version>
+          <scope>test</scope>
+      </dependency>
+  </dependencies>
+
+  <build>
+    <testResources>
+        <testResource>
+            <directory>${basedir}/src/test/resources</directory>
+        </testResource>
+    </testResources>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+          <configuration>
+              <release>13</release>
+              <compilerArgs>
+                  --enable-preview
+              </compilerArgs>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M3</version>
+          <configuration>
+              <argLine>--enable-preview</argLine>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+              <archive>
+                  <manifest>
+                      <addClasspath>true</addClasspath>
+                      <mainClass>org.m_flak.myblog.server.App</mainClass>
+                  </manifest>
+              </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <!-- Plugins under pluginManagement don't implicitly run. -->
+    <!-- You have to put them here. Nowhere do the docs say this. WTF?! APACHE! -->
+    <plugins>
+        <!-- Generate keystore for the build -->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>keytool-maven-plugin</artifactId>
+             <version>1.5</version>
+             <executions>
+               <execution>
+                 <goals>
+                   <goal>generateKeyPair</goal>
+                 </goals>
+                 <phase>generate-resources</phase>
+               </execution>
+             </executions>
+             <configuration>
+                 <keystore>${basedir}/src/main/resources/keystore.jks</keystore>
+                 <storepass>STOREPASSHERE</storepass>
+                 <keypass>KEYPASSHERE</keypass>
+                 <alias>myblog_server_alias</alias>
+                 <dname>CN=localhost</dname>
+                 <sigalg>SHA256withRSA</sigalg>
+                 <ext></ext>
+                 <keyalg>RSA</keyalg>
+                 <keysize>2048</keysize>
+                 <validity>545</validity>
+                 <skipIfExist>true</skipIfExist>
+             </configuration>
+        </plugin>
+        <!-- Copy the keystore that was made above into test resources -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version>
+            <executions>
+                <execution>
+                    <id>jks-web-copy</id>
+                    <phase>generate-test-resources</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <target>
+                            <echo message="Copying keystore.jks to ${basedir}/src/test/resources ..." />
+                            <copy file="${basedir}/src/main/resources/keystore.jks" tofile="${basedir}/src/test/resources/keystore.jks" overwrite="true" />
+                            <echo message="Copying jks.properties to ${basedir}/src/test/resources ..." />
+                            <copy file="${basedir}/src/main/resources/jks.properties" tofile="${basedir}/src/test/resources/jks.properties" overwrite="true" />
+                            <echo message="Copying web.properties to ${basedir}/src/test/resources ..." />
+                            <copy file="${basedir}/src/main/resources/web.properties" tofile="${basedir}/src/test/resources/web.properties" overwrite="true" />
+                        </target>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.2</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <minimizeJar>true</minimizeJar>
+                        <filters>
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>META-INF/*.SF</exclude>
+                                    <exclude>META-INF/*.DSA</exclude>
+                                    <exclude>META-INF/*.RSA</exclude>
+                                </excludes>
+                            </filter>
+                            <filter>
+                                <artifact>commons-logging:commons-logging</artifact>
+                                <includes>
+                                    <include>**</include>
+                                </includes>
+                            </filter>
+                            <filter>
+                                <artifact>mysql:mysql-connector-java</artifact>
+                                <includes>
+                                    <include>**</include>
+                                </includes>
+                            </filter>
+                            <filter>
+                                <artifact>org.apache.empire-db:empire-db</artifact>
+                                <includes>
+                                    <include>**</include>
+                                </includes>
+                            </filter>
+                        </filters>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>13</source>
+                <target>13</target>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+</project>
