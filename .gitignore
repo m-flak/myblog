@@ -14,6 +14,7 @@ server/.idea
 server.iml
 
 # configured files
+config/.env
 config/database_users.sql
 config/database.xml
 config/jks.properties
