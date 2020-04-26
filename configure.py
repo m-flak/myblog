@@ -258,6 +258,11 @@ if __name__ == '__main__':
         './server/pom.xml'
     )
 
+    shutil.move(
+        './config/.env',
+        './.env'
+    )
+
     if os.path.exists('./config/package.json'):
         shutil.move(
             './config/package.json',
