@@ -1,0 +1,16 @@
+[Unit]
+Description=myBLOG server
+After=network.target
+After=mysql.service
+Requires=mysql.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/blogsrv
+Environment="PATH=/var/www/blogsrv"
+ExecStart=/usr/bin/java --enable-preview -jar /var/www/blogsrv/server-1.0-shaded.jar --mode server
+
+[Install]
+WantedBy=multi-user.target
+
