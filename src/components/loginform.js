@@ -1,7 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Session } from 'bc-react-session';
-import { RouteURL } from '../router.js';
-import { withRouter } from 'react-router';
 import { getFromBackend, postToBackend, encryptPassword } from '../util';
 import './loginform.css';
 
@@ -34,7 +33,10 @@ export class LoginForm extends React.Component {
                     }
                 });
 
-                this.props.history.push(new RouteURL('/').get());
+                if (this.props.onAuthenticated !== undefined && this.props.onAuthenticated !== null) {
+                    const onAuthenticated = this.props.onAuthenticated;
+                    onAuthenticated();
+                }
             })
             .catch((error) => {
                 console.log(error.stack);
@@ -75,4 +77,6 @@ export class LoginForm extends React.Component {
         );
     }
 }
-export const LoginFormWithRouter = withRouter(LoginForm);
+LoginForm.propTypes = {
+    onAuthenticated: PropTypes.func
+}

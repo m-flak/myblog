@@ -1,7 +1,6 @@
 import * as axios from 'axios';
 import * as pathbrowser from 'path-browserify';
 import * as q_string from 'query-string';
-import * as url from 'url';
 
 /*
  * Ensure that a response is in the proper format (JSON)
@@ -33,18 +32,14 @@ function formatResponse (response) {
 /*
  * Simply checks if a URL is a full URL.
  */
-function isFullURL (an_url) {
-    var urlObject = url.parse(an_url, false, false);
-    // A 'full' URL for the backend is http://blah:8188/
-    var neededParts = ['protocol', 'host', 'hostname', 'port'];
+export function isFullURL (an_url) {
     var isFull = true;
 
-    for (const i in neededParts) {
-        const key = neededParts[i];
-        if (urlObject[key] === '' || urlObject[key] === undefined) {
-            isFull = false;
-            break;
-        }
+    try {
+        const u = new URL(an_url);
+    }
+    catch {
+        isFull = false;
     }
 
     return isFull;
@@ -53,22 +48,30 @@ function isFullURL (an_url) {
 /*
  * Creates a backend url from a requested resource (e.g.: '/request')
  */
-function backendURL (requested_resource) {
+export function backendURL (requested_resource) {
+    // Properly join a url together
+    const joinURLs = (base, ...urls) => {
+        var baseURL = new URL(base);
+
+        urls.forEach((u) => {
+            baseURL.pathname = pathbrowser.join(baseURL.pathname, u);
+        });
+
+        return baseURL.toString();
+    }
+
+    // Our backend's url or its location on the server
     var dotenvURL = process.env.REACT_APP_BACKEND_URL;
 
-    // dotenvURL is a full url.
+    // dotenvURL is a full url
     if (isFullURL(dotenvURL)) {
-        return url.resolve(dotenvURL, requested_resource);
+        return joinURLs(dotenvURL, requested_resource);
     }
 
     // dotenvURL is a relative path
-    var serverURLObj = url.parse(window.location.href, false, false);
-    serverURLObj.pathname = '';
-
-    // Create our backend query base url
-    var backendURL = url.resolve(url.format(serverURLObj), dotenvURL);
-
-    return pathbrowser.join(backendURL, requested_resource);
+    // if the backend is at a relative path, it WILL NOT be in within the frontend's path.
+    const theBase = window.location.pathname === '/' ? window.location.href : window.location.href.replace(window.location.pathname, '/');
+    return joinURLs(theBase, dotenvURL, requested_resource);
 }
 
 /*

@@ -1,7 +1,12 @@
 import React from 'react';
-import * as url from 'url';
+import * as pathbrowser from 'path-browserify';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Routes, HomeRoute, LoginRoute, LogoutRoute, PostRoute, FilteredPostsRoute, NotFoundRoute } from './routes';
+
+/** I'm literally flabbergasted that I had to do this... :o **/
+function removeDamnHttp (strToFix) {
+    return strToFix.replace(/http:\/+/, '/');
+}
 
 /** Returns from dotenv: REACT_APP_BASENAME=$npm_package_homepage **/
 function find_base_name () {
@@ -11,7 +16,13 @@ function find_base_name () {
     if (!base_name.length > 0) {
         return null;
     }
-    return base_name;
+
+    // react-router will be pissed if the basename ends in a /
+    if (base_name !== '/' && base_name.endsWith('/')) {
+        base_name = base_name.slice(0, base_name.length - 1);
+    }
+
+    return removeDamnHttp(base_name);
 }
 
 /** Apply the route basename to a path **/
@@ -26,7 +37,10 @@ export class RouteURL {
             return this.path;
         }
 
-        return url.resolve(this.basename, this.path);
+        let theRoute = pathbrowser.join(this.basename, this.path);
+        theRoute = removeDamnHttp(theRoute);
+
+        return theRoute;
     }
 }
 
@@ -52,9 +66,11 @@ export default class AppRouter extends React.Component {
             <div style={{ height: '100%' }}>
                 <BrowserRouter basename={find_base_name()}>
                     <Switch>
-                        <Route exact path="/" component={HomeRoute} />
-                        <Route exact path="/login/" component={LoginRoute} />
-                        <Route exact path="/logout/" component={LogoutRoute} />
+                        <Route exact path="/">
+                            <HomeRoute />
+                        </Route>
+                        <Route path="/login/" component={LoginRoute} />
+                        <Route path="/logout/" component={LogoutRoute} />
                         <Route path="/post/:postID" component={PostRoute} />
                         <Route path="/posts/:year/:month" component={FilteredPostsRoute} />
                         <Route component={NotFoundRoute} />
