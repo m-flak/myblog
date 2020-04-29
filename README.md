@@ -1,11 +1,26 @@
 # myBLOG
 > A full-stack web application that shall be my personal blog
 
-**STILL UNDER CONSTRUCTION**
-\_√\_ Backend
-\_\_\_ Frontend
+### Configuration
 
-Eventually, there will be a configuration script to do all of this (or most of it).
+##### Build
+Before building the backend & frontend, initial configuration must be performed. This can be accomplished via:
+```
+git branch deploy
+git checkout deploy
+python configure.py
+```
+Follow the instructions to configure both the frontend & backend.
+
+Afterwards, apply the generated **config/database_users.sql** file to the database on your server. This can be done like this:
+```
+mysql -u root -p < database_users.sql
+```
+You'll populate the database with tables and a user account using the server executable. We'll get to that later in [Backend Setup](#backend-setup).
+
+##### Web Server & Host Configuration
+
+Both an example systemd unit file and nginx configuration can be found in the **srvconfig** directory.
 
 ### Frontend Setup
 
@@ -15,47 +30,30 @@ For general questions about building the frontend, [see this file](README_CAR.md
 
 ##### Deployment
 
-The ``homepage`` variable in _**package.json**_ can be set to allow for an alternate root directory for the frontend application.
+Refer to the sample nginx configuration for any questions. The frontend is deployed like any React application.
 
-Create a .env file. It should look like the following:
-```
-REACT_APP_BLOG_TITLE=The Intercept
-REACT_APP_BLOG_BLURB=The Official Blog of Tony Romo
-REACT_APP_BASENAME=$npm_package_homepage
-REACT_APP_BACKEND_URL=**!SEE_BELOW!**
-```
-**REACT_APP_BACKEND_URL** can be a full URL , like ``http://127.0.0.1:8188/``, or it can be a relative path like ``/api/``. It depends on if you plan to run the backend behind a reverse proxy or not.
+### Backend Setup
 
-_If you don't run the backend behind a reverse proxy, you will be transmitting usernames and authorization tokens over HTTP._
+##### Building
 
-### Server Setup
+Building the backend requires **maven**. _You'll probably need to remove this from **pom.xml**_:
+```xml
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M3</version>
+          <configuration>
+              <argLine>--enable-preview</argLine>
+          </configuration>
+        </plugin>
+ ```
+_Remove that in order to disable the tests_, because the tests require a functional MySQL database & account. The testing database and account is included in the **database_users.sql** file.
 
-The server must be configured. Below are the steps necessary to get it up and running.
+Run the ``mvn package`` command from within the **server** directory.
 
-##### Database Configuration
+##### Post-Build
 
-The values of the below SQL commands should be identical to whatever is in _**server/src/main/resources/database.xml**_
+Before the server can get to work, the database must be filled with tables, and a user account needs to be created.
 
-**Repeat this step for the test database, using whatever's in:** _**server/src/test/resources/database.xml**_
+**For the tables:** ``java --enable-preview -jar server-1.0-shaded.jar --mode migrate``
 
-```SQL
-CREATE DATABASE myblogdb;
-CREATE USER 'myblog_user'@'localhost' IDENTIFIED WITH mysql_native_password BY '<PASSWORD_HERE>';
-GRANT ALL ON myblogdb.* TO 'myblog_user'@'localhost';
-```
-
-##### Keystore Configuration
-
-**Next,** you will need to change the keystore parameters found in _**server/pom.xml**_ and _**server/src/main/resources/jks.properties**_ respectively.
-
-##### Application Root
-
-If you're running a reverse proxy to the server (which you should), you might need to modify _**server/src/main/resources/web.properties**_. If you're confused by any of the terminology within this subsection, you're clearly not using _nginx_. =)
-
-Here's how you determine whether or not you will need to modify that file:
-- <u>A reverse proxy directive in /</u> → _No change required._
-- <u>A reverse proxy directive in some subdirectory, say /foobar/</u> → _Change required!_
-
-##### CORS Origin
-
-Set the **frontend_origin** variable in _**server/src/main/resources/web.properties**_ to the origin where the frontend will be running from.
+**For the user:** ``java --enable-preview -jar server-1.0-shaded.jar --mode shell``
